@@ -35,5 +35,10 @@ namespace WindowsFormsApp1
             myBrush.Dispose();
             g.Dispose();
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+
+        }
     }
 }
