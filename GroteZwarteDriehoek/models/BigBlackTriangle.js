@@ -9,7 +9,7 @@ const BigBlackTriangle = class {
         this.directionCap = 0.01;
     }
 
-    steer = () => {
+    steer() {
         var ax = destination.x - bbt.x;
         var ay = destination.y - bbt.y;
         var theta = Math.atan2(ay, ax);
@@ -27,21 +27,21 @@ const BigBlackTriangle = class {
         }
     }
 
-    calculateVelocity = () => {
+    calculateVelocity() {
         var height = destination.x - this.x;
         var width = destination.y - this.y;
         var speed = height * height + width * width;
         return 0.00000000015 * speed * speed + 1;
     }
 
-    update = () => {
+    update() {
         this.direction = this.steer();
         this.velocity = this.calculateVelocity();
         this.x += Math.cos(this.direction) * this.velocity;
         this.y += Math.sin(this.direction) * this.velocity;
     }
 
-    draw = () => {
+    draw() {
         triangle(bbt.x, bbt.y, bbt.x + bbt.width, bbt.y + (bbt.height / 2), bbt.x, bbt.y + bbt.height);
     }
 }
