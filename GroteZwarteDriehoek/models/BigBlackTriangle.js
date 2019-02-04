@@ -18,7 +18,6 @@ const BigBlackTriangle = class {
             // theta - this.direction > -this.directionCap && theta - this.direction < 0
             theta - this.direction > Math.PI * 2 + this.directionCap
         ) {
-            console.log('legal');
             return theta;
         } else if (theta < this.direction) {
             return this.direction - this.directionCap;
