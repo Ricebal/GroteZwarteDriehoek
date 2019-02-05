@@ -18,7 +18,6 @@ const BigBlackTriangle = class {
             // theta - this.direction > -this.directionCap && theta - this.direction < 0
             theta - this.direction > Math.PI * 2 + this.directionCap
         ) {
-            console.log('legal');
             return theta;
         } else if (theta < this.direction) {
             return this.direction - this.directionCap;
@@ -42,6 +41,12 @@ const BigBlackTriangle = class {
     }
 
     draw() {
-        triangle(bbt.x, bbt.y, bbt.x + bbt.width, bbt.y + (bbt.height / 2), bbt.x, bbt.y + bbt.height);
+        fill('black');
+        triangle(
+            this.x + Math.cos(this.direction + Math.PI * 1.5) * 5, this.y + Math.sin(this.direction + Math.PI * 1.5) * 5,
+            this.x + Math.cos(this.direction) * 20, this.y + Math.sin(this.direction) * 20,
+            this.x + Math.cos(this.direction + Math.PI * 0.5) * 5, this.y + Math.sin(this.direction + Math.PI * 0.5) * 5
+        );
+        noFill();
     }
 }
