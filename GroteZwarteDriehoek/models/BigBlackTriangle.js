@@ -1,52 +1,48 @@
 const BigBlackTriangle = class {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.width = 100;
-        this.height = 50;
-        this.direction = 0;
-        this.velocity = 5;
-        this.directionCap = 0.01;
+        this.acceleration = createVector(0, 0);
+        this.velocity = p5.Vector.random2D();
+        this.position = createVector(x, y);
+        this.maxSpeed = 5;
+        this.maxForce = 0.05;
+        console.log(this.position);
     }
 
-    steer() {
-        var ax = destination.x - bbt.x;
-        var ay = destination.y - bbt.y;
-        var theta = Math.atan2(ay, ax);
-        if (
-            theta - this.direction < this.directionCap ||
-            // theta - this.direction > -this.directionCap && theta - this.direction < 0
-            theta - this.direction > Math.PI * 2 + this.directionCap
-        ) {
-            return theta;
-        } else if (theta < this.direction) {
-            return this.direction - this.directionCap;
-        } else if (theta > this.direction) {
-            return this.direction + this.directionCap;
-        }
+    seek() {
+        let desired = p5.Vector.sub(destination.position, this.position);
+        desired.normalize();
+        desired.mult(this.maxSpeed);
+
+        let steer = p5.Vector.sub(desired, this.velocity);
+        steer.limit(this.maxForce);
+        return steer;
     }
 
-    calculateVelocity() {
-        var height = destination.x - this.x;
-        var width = destination.y - this.y;
-        var speed = height * height + width * width;
-        return 0.00000000015 * speed * speed + 1;
+    applyForce() {
+        this.acceleration.add(this.seek());
+
+        this.velocity.add(this.acceleration);
+        this.velocity.limit(this.maxSpeed);
+        this.position.add(this.velocity);
+
+        this.acceleration.mult(0);
     }
+
 
     update() {
-        this.direction = this.steer();
-        this.velocity = this.calculateVelocity();
-        this.x += Math.cos(this.direction) * this.velocity;
-        this.y += Math.sin(this.direction) * this.velocity;
+        this.applyForce();
+        this.draw();
     }
 
     draw() {
         fill('black');
-        triangle(
-            this.x + Math.cos(this.direction + Math.PI * 1.5) * 5, this.y + Math.sin(this.direction + Math.PI * 1.5) * 5,
-            this.x + Math.cos(this.direction) * 20, this.y + Math.sin(this.direction) * 20,
-            this.x + Math.cos(this.direction + Math.PI * 0.5) * 5, this.y + Math.sin(this.direction + Math.PI * 0.5) * 5
-        );
+        // triangle(
+        //     this.position.x + Math.cos(Math.atan2(this.seek().y, this.seek().x) + Math.PI * 1.5) * 5, this.position.y + Math.sin(Math.atan2(this.seek().y)),
+        //     this.position.x + 20, this.position.y,
+        //     this.position.x - 10, this.position.y + 10
+        // );
+
+        circle(this.position.x, this.position.y, 10);
         noFill();
     }
 }
