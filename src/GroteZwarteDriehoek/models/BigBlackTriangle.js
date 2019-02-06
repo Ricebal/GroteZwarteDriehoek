@@ -4,8 +4,7 @@ const BigBlackTriangle = class {
         this.velocity = p5.Vector.random2D();
         this.position = createVector(x, y);
         this.maxSpeed = 5;
-        this.maxForce = 0.05;
-        console.log(this.position);
+        this.maxForce = 0.01;
     }
 
     seek() {
@@ -36,13 +35,13 @@ const BigBlackTriangle = class {
 
     draw() {
         fill('black');
-        // triangle(
-        //     this.position.x + Math.cos(Math.atan2(this.seek().y, this.seek().x) + Math.PI * 1.5) * 5, this.position.y + Math.sin(Math.atan2(this.seek().y)),
-        //     this.position.x + 20, this.position.y,
-        //     this.position.x - 10, this.position.y + 10
-        // );
+        triangle(
+            this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 1.5) * 5, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 1.5) * 5,
+            this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x)) * 20, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x)) * 20,
+            this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * 5, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * 5
+        );
 
-        circle(this.position.x, this.position.y, 10);
+        // circle(this.position.x, this.position.y, 10);
         noFill();
     }
 }

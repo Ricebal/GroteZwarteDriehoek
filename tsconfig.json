@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "outFile": "./dist/bundle.js",
+        "sourceMap": true,
+        "strictNullChecks": false,
+        "allowJs": true
+    },
+    "include": [
+        "./src/**/*"
+    ],
+    "exclude": [
+        "./src/p5/**/*"
+    ]
+}
