@@ -20,4 +20,5 @@ window.onload = () => {
   let app = new App(new Game(canvas));
 
   app.setup();
+  console.log('Game loaded!');
 }

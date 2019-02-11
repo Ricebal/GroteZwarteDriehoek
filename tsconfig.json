@@ -1,9 +1,16 @@
 {
     "compilerOptions": {
-        "outFile": "./dist/bundle.js",
+        "outDir": "./dist",
+        "module": "none",
         "sourceMap": true,
+        "target": "es5",
         "strictNullChecks": false,
-        "allowJs": true
+        "allowJs": true,
+        "lib": [
+            "es5",
+            "dom",
+            "es2016"
+        ]
     },
     "include": [
         "./src/**/*"
