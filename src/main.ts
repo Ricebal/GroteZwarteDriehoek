@@ -1,3 +1,5 @@
+import { Game } from './classes/game';
+
 class App {
   private _game: Game;
 

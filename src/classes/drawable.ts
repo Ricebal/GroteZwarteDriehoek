@@ -1,4 +1,6 @@
-class Drawable {
+import { Vector } from "./vector";
+
+export class Drawable {
     public position: Vector;
     public ctx: CanvasRenderingContext2D;
 

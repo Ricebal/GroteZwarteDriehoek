@@ -1,4 +1,7 @@
-class Planet extends Drawable {
+import { Drawable } from './drawable';
+import { Vector } from './vector';
+
+export class Planet extends Drawable {
     private right: boolean;
     private up: boolean;
     private vSpeed: number;

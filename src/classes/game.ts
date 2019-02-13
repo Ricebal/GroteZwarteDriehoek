@@ -1,4 +1,8 @@
-class Game {
+import { Drawable } from "./drawable";
+import { Planet } from "./planet";
+import { BigBlackTriangle } from "./bigblacktriangle";
+
+export class Game {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
     private height: number = 900;

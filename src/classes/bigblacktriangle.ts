@@ -1,4 +1,8 @@
-class BigBlackTriangle extends Drawable {
+import { Game } from './game';
+import { Drawable } from './drawable';
+import { Vector } from './vector';
+
+export class BigBlackTriangle extends Drawable {
     public acceleration: Vector;
     public velocity: Vector;
     public maxSpeed: number;
@@ -9,8 +13,8 @@ class BigBlackTriangle extends Drawable {
         super(x, y, context);
         this.acceleration = new Vector();
         this.velocity = new Vector();
-        this.maxSpeed = 10;
-        this.maxForce = 0.5;
+        this.maxSpeed = 5;
+        this.maxForce = 0.3;
         this.size = 10;
     }
 
