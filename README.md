@@ -1,5 +1,5 @@
 # GroteZwarteDriehoek
-A small AI simulation
+A small AI simulation, Grote zwarte driehoek is Dutch for big black triangle, which is the main protagonist (or antagonist depending on how you look at it) of the simulation.
 
 ## Part 1: Steering
 - An application with a GUI that displays the AI world.
