@@ -1,4 +1,4 @@
-import { Vector } from "./vector";
+import { Vector } from "./Vector";
 import { World } from "./World";
 
 export class BaseGameEntity {

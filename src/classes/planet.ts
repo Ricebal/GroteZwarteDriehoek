@@ -1,4 +1,4 @@
-import { Vector } from './vector';
+import { Vector } from './Vector';
 import { MovingGameEntity } from './MovingGameEntity';
 import { World } from './World';
 

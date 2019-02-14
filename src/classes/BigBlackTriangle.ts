@@ -1,6 +1,6 @@
 import { World } from './World';
 import { BaseGameEntity } from './BaseGameEntity';
-import { Vector } from './vector';
+import { Vector } from './Vector';
 
 export class BigBlackTriangle extends BaseGameEntity {
     public acceleration: Vector;

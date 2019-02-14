@@ -1,5 +1,5 @@
 import { BaseGameEntity } from "./BaseGameEntity";
-import { Planet } from "./planet";
+import { Planet } from "./Planet";
 import { BigBlackTriangle } from "./BigBlackTriangle";
 
 export class World {
