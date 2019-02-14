@@ -15,7 +15,8 @@ export class BigBlackTriangle extends MovingGameEntity {
         this.maxForce = 0.1;
         this.size = 10;
 
-        this.behaviours.push(new SeekBehaviour(this, World.planets[0]));
+        this.behaviours = [];
+        this.behaviours.push(new SeekBehaviour(this, this.world.gameObjects[0].position));
     }
 
     private seek(target: BaseGameEntity): Vector {

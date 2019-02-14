@@ -9,7 +9,7 @@ export class World {
     private height: number = 900;
     private width: number = 900;
     public gameObjects: Array<BaseGameEntity>;
-    public static planets: Array<Planet>;
+    public planets: Array<Planet>;
 
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
@@ -17,13 +17,13 @@ export class World {
         this.canvas.height = this.height;
         this.ctx = this.canvas.getContext("2d");
         this.gameObjects = [];
-        World.planets = [];
-        this.gameObjects.push(new BigBlackTriangle(200, 200, this));
+        this.planets = [];
         this.gameObjects.push(new Planet(450, 450, this));
-        // this.gameObjects.push(new SmallBlueCircle(600, 600, this));
+        this.gameObjects.push(new BigBlackTriangle(200, 200, this));
+        this.gameObjects.push(new SmallBlueCircle(600, 600, this));
         for (let i = 0; i < this.gameObjects.length; i++) {
             if (this.gameObjects[i] instanceof Planet) {
-                World.planets.push(<Planet>this.gameObjects[i]);
+                this.planets.push(<Planet>this.gameObjects[i]);
             }
         }
     }

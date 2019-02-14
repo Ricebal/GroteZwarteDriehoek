@@ -17,6 +17,10 @@ export class Vector {
         return new Vector(v1.x - v2.x, v1.y - v2.y);
     }
 
+    public static random(): Vector {
+        return new Vector(Math.random() * 900, Math.random() * 900);
+    }
+
     public mult(n: number): Vector {
         this.x *= n;
         this.y *= n;

@@ -1,19 +1,18 @@
-import { BaseGameEntity } from "../BaseGameEntity";
 import { Vector } from "../Vector";
 import { MovingGameEntity } from "../MovingGameEntity";
 import { Behaviour } from "./Behaviour";
 
 export class SeekBehaviour extends Behaviour {
     public owner: MovingGameEntity;
-    public target: BaseGameEntity;
+    public target: Vector;
 
-    constructor(owner: MovingGameEntity, target: BaseGameEntity) {
+    constructor(owner: MovingGameEntity, target: Vector) {
         super(owner);
         this.target = target;
     }
 
     public apply(): Vector {
-        let desired = Vector.sub(this.target.position, this.owner.position);
+        let desired = Vector.sub(this.target, this.owner.position);
         desired.normalize();
         desired.mult(this.owner.maxSpeed);
 
