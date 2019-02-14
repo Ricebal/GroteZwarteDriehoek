@@ -1,8 +1,8 @@
-import { Game } from './game';
-import { Drawable } from './drawable';
+import { World } from './World';
+import { BaseGameEntity } from './BaseGameEntity';
 import { Vector } from './vector';
 
-export class BigBlackTriangle extends Drawable {
+export class BigBlackTriangle extends BaseGameEntity {
     public acceleration: Vector;
     public velocity: Vector;
     public maxSpeed: number;
@@ -18,7 +18,7 @@ export class BigBlackTriangle extends Drawable {
         this.size = 10;
     }
 
-    private seek(target: Drawable) {
+    private seek(target: BaseGameEntity) {
         let desired = Vector.sub(target.position, this.position);
         desired.normalize();
         desired.mult(this.maxSpeed);
@@ -29,7 +29,7 @@ export class BigBlackTriangle extends Drawable {
     }
 
     private applyForce() {
-        this.acceleration.add(this.seek(Game.planets[0]));
+        this.acceleration.add(this.seek(World.planets[0]));
 
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.maxSpeed);

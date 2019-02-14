@@ -1,13 +1,13 @@
-import { Drawable } from "./drawable";
+import { BaseGameEntity } from "./BaseGameEntity";
 import { Planet } from "./planet";
-import { BigBlackTriangle } from "./bigblacktriangle";
+import { BigBlackTriangle } from "./BigBlackTriangle";
 
-export class Game {
+export class World {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
     private height: number = 900;
     private width: number = 900;
-    public gameObjects: Array<Drawable>;
+    public gameObjects: Array<BaseGameEntity>;
     public static planets: Array<Planet>;
 
     constructor(canvas: HTMLCanvasElement) {
@@ -16,12 +16,12 @@ export class Game {
         this.canvas.height = this.height;
         this.ctx = this.canvas.getContext("2d");
         this.gameObjects = [];
-        Game.planets = [];
+        World.planets = [];
         this.gameObjects.push(new BigBlackTriangle(200, 200, this.ctx));
         this.gameObjects.push(new Planet(450, 450, this.ctx));
         for (let i = 0; i < this.gameObjects.length; i++) {
             if (this.gameObjects[i] instanceof Planet) {
-                Game.planets.push(<Planet>this.gameObjects[i]);
+                World.planets.push(<Planet>this.gameObjects[i]);
             }
         }
     }

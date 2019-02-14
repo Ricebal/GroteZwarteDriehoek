@@ -1,9 +1,9 @@
-import { Game } from './classes/game';
+import { World } from './classes/World';
 
 class App {
-  private _game: Game;
+  private _game: World;
 
-  constructor(game: Game) {
+  constructor(game: World) {
     this._game = game;
   }
 
@@ -19,7 +19,7 @@ class App {
 
 window.onload = () => {
   const canvas = <HTMLCanvasElement>document.getElementById('main');
-  let app = new App(new Game(canvas));
+  let app = new App(new World(canvas));
 
   app.setup();
   console.log('Game loaded!');

@@ -1,6 +1,6 @@
 import { Vector } from "./vector";
 
-export class Drawable {
+export class BaseGameEntity {
     public position: Vector;
     public ctx: CanvasRenderingContext2D;
 

@@ -1,7 +1,7 @@
-import { Drawable } from './drawable';
 import { Vector } from './vector';
+import { MovingGameEntity } from './MovingGameEntity';
 
-export class Planet extends Drawable {
+export class Planet extends MovingGameEntity {
     private right: boolean;
     private up: boolean;
     private vSpeed: number;
