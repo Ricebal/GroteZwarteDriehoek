@@ -1,4 +1,4 @@
-import { Vector } from "./vector";
+import { Vector } from "./Vector";
 
 export class BaseGameEntity {
     public position: Vector;
