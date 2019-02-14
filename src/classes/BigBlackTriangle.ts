@@ -9,12 +9,12 @@ export class BigBlackTriangle extends BaseGameEntity {
     public maxForce: number;
     public size: number;
 
-    constructor(x: number, y: number, context: CanvasRenderingContext2D) {
-        super(x, y, context);
+    constructor(x: number, y: number, world: World) {
+        super(x, y, world);
         this.acceleration = new Vector();
         this.velocity = new Vector();
-        this.maxSpeed = 5;
-        this.maxForce = 0.3;
+        this.maxSpeed = 10;
+        this.maxForce = 0.1;
         this.size = 10;
     }
 
@@ -45,12 +45,12 @@ export class BigBlackTriangle extends BaseGameEntity {
     }
 
     private draw() {
-        this.ctx.fillStyle = 'rgb(0, 0, 0)';
-        this.ctx.beginPath();
-        this.ctx.moveTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 1.5) * this.size, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 1.5) * this.size);
-        this.ctx.lineTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x)) * this.size * 4, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x)) * this.size * 4);
-        this.ctx.lineTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size);
-        this.ctx.fill();
-        this.ctx.closePath();
+        this.world.ctx.fillStyle = 'rgb(0, 0, 0)';
+        this.world.ctx.beginPath();
+        this.world.ctx.moveTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 1.5) * this.size, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 1.5) * this.size);
+        this.world.ctx.lineTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x)) * this.size * 4, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x)) * this.size * 4);
+        this.world.ctx.lineTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size);
+        this.world.ctx.fill();
+        this.world.ctx.closePath();
     }
 }

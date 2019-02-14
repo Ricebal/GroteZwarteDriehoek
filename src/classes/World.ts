@@ -4,7 +4,7 @@ import { BigBlackTriangle } from "./BigBlackTriangle";
 
 export class World {
     private canvas: HTMLCanvasElement;
-    private ctx: CanvasRenderingContext2D;
+    public ctx: CanvasRenderingContext2D;
     private height: number = 900;
     private width: number = 900;
     public gameObjects: Array<BaseGameEntity>;
@@ -17,8 +17,8 @@ export class World {
         this.ctx = this.canvas.getContext("2d");
         this.gameObjects = [];
         World.planets = [];
-        this.gameObjects.push(new BigBlackTriangle(200, 200, this.ctx));
-        this.gameObjects.push(new Planet(450, 450, this.ctx));
+        this.gameObjects.push(new BigBlackTriangle(200, 200, this));
+        this.gameObjects.push(new Planet(450, 450, this));
         for (let i = 0; i < this.gameObjects.length; i++) {
             if (this.gameObjects[i] instanceof Planet) {
                 World.planets.push(<Planet>this.gameObjects[i]);
