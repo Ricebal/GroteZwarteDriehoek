@@ -9,8 +9,8 @@ export class WanderBehaviour extends Behaviour {
     }
 
     public apply(): Vector {
-        let wanderRadius: number = 100;
-        let wanderDistance: number = 60;
+        let wanderRadius: number = 50;
+        let wanderDistance: number = 40;
         let wanderJitter: number = 1;
         let wanderTarget: Vector = new Vector();
 
@@ -18,9 +18,10 @@ export class WanderBehaviour extends Behaviour {
         wanderTarget.normalize();
         wanderTarget.mult(wanderRadius);
 
-        let targetLocal: Vector = wanderTarget.clone().add(new Vector(wanderDistance, 0));
-        let targetWorld: Vector = new Vector();
+        let targetWorld: Vector = this.owner.position.clone().add(this.owner.velocity.clone().mult(wanderDistance)).add(wanderTarget);
 
-        return wanderTarget;
+        const seekBehaviour = new SeekBehaviour(this.owner, targetWorld);
+
+        return seekBehaviour.apply();
     }
 }
