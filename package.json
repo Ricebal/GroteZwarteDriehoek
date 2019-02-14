@@ -1,0 +1,24 @@
+{
+  "name": "grotezwartedriehoek",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ricebal/GroteZwarteDriehoek.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ricebal/GroteZwarteDriehoek/issues"
+  },
+  "homepage": "https://github.com/Ricebal/GroteZwarteDriehoek#readme",
+  "devDependencies": {
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.3.3",
+    "webpack": "^4.29.3"
+  }
+}
