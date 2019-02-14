@@ -1,6 +1,7 @@
 import { BaseGameEntity } from "./BaseGameEntity";
 import { Planet } from "./Planet";
 import { BigBlackTriangle } from "./BigBlackTriangle";
+import { SmallBlueCircle } from "./SmallBlueCircle";
 
 export class World {
     private canvas: HTMLCanvasElement;
@@ -19,6 +20,7 @@ export class World {
         World.planets = [];
         this.gameObjects.push(new BigBlackTriangle(200, 200, this));
         this.gameObjects.push(new Planet(450, 450, this));
+        // this.gameObjects.push(new SmallBlueCircle(600, 600, this));
         for (let i = 0; i < this.gameObjects.length; i++) {
             if (this.gameObjects[i] instanceof Planet) {
                 World.planets.push(<Planet>this.gameObjects[i]);

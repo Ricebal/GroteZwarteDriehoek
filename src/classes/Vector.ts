@@ -29,6 +29,10 @@ export class Vector {
         return this;
     }
 
+    public clone(): Vector {
+        return new Vector(this.x, this.y);
+    }
+
     private magSq(): number {
         return this.x * this.x + this.y * this.y;
     }

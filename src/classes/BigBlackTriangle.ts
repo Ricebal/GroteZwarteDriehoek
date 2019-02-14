@@ -1,12 +1,10 @@
 import { World } from './World';
-import { BaseGameEntity } from './BaseGameEntity';
 import { Vector } from './Vector';
+import { MovingGameEntity } from './MovingGameEntity';
+import { BaseGameEntity } from './BaseGameEntity';
+import { SeekBehaviour } from './behaviours/SeekBehaviour';
 
-export class BigBlackTriangle extends BaseGameEntity {
-    public acceleration: Vector;
-    public velocity: Vector;
-    public maxSpeed: number;
-    public maxForce: number;
+export class BigBlackTriangle extends MovingGameEntity {
     public size: number;
 
     constructor(x: number, y: number, world: World) {
@@ -16,9 +14,11 @@ export class BigBlackTriangle extends BaseGameEntity {
         this.maxSpeed = 10;
         this.maxForce = 0.1;
         this.size = 10;
+
+        this.behaviours.push(new SeekBehaviour(this, World.planets[0]));
     }
 
-    private seek(target: BaseGameEntity) {
+    private seek(target: BaseGameEntity): Vector {
         let desired = Vector.sub(target.position, this.position);
         desired.normalize();
         desired.mult(this.maxSpeed);
@@ -28,8 +28,10 @@ export class BigBlackTriangle extends BaseGameEntity {
         return steer;
     }
 
-    private applyForce() {
-        this.acceleration.add(this.seek(World.planets[0]));
+    private applyForce(): void {
+        for (let key in this.behaviours) {
+            this.acceleration.add(this.behaviours[key].apply());
+        }
 
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.maxSpeed);
@@ -39,12 +41,12 @@ export class BigBlackTriangle extends BaseGameEntity {
     }
 
 
-    public update() {
+    public update(): void {
         this.applyForce();
         this.draw();
     }
 
-    private draw() {
+    private draw(): void {
         this.world.ctx.fillStyle = 'rgb(0, 0, 0)';
         this.world.ctx.beginPath();
         this.world.ctx.moveTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 1.5) * this.size, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 1.5) * this.size);
