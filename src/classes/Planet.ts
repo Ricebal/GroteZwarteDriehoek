@@ -1,5 +1,6 @@
 import { Vector } from './Vector';
 import { MovingGameEntity } from './MovingGameEntity';
+import { World } from './World';
 
 export class Planet extends MovingGameEntity {
     private right: boolean;
@@ -7,8 +8,8 @@ export class Planet extends MovingGameEntity {
     private vSpeed: number;
     private hSpeed: number;
 
-    constructor(x: number, y: number, context: CanvasRenderingContext2D) {
-        super(x, y, context);
+    constructor(x: number, y: number, world: World) {
+        super(x, y, world);
         this.right = true;
         this.up = true;
         this.vSpeed = 10;
@@ -53,8 +54,8 @@ export class Planet extends MovingGameEntity {
     }
 
     private draw(): void {
-        this.ctx.beginPath();
-        this.ctx.arc(this.position.x + 10, this.position.y + 10, 20, 0, 2 * Math.PI);
-        this.ctx.stroke();
+        this.world.ctx.beginPath();
+        this.world.ctx.arc(this.position.x + 10, this.position.y + 10, 20, 0, 2 * Math.PI);
+        this.world.ctx.stroke();
     }
 }

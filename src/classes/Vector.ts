@@ -17,6 +17,10 @@ export class Vector {
         return new Vector(v1.x - v2.x, v1.y - v2.y);
     }
 
+    public static random(): Vector {
+        return new Vector(Math.random() * 900, Math.random() * 900);
+    }
+
     public mult(n: number): Vector {
         this.x *= n;
         this.y *= n;
@@ -27,6 +31,14 @@ export class Vector {
         this.x /= n;
         this.y /= n;
         return this;
+    }
+
+    public static distanceSq(v1: Vector, v2: Vector): number {
+        return Math.pow(v2.x - v1.x, 2) + Math.pow(v2.y - v1.y, 2);
+    }
+
+    public clone(): Vector {
+        return new Vector(this.x, this.y);
     }
 
     private magSq(): number {
