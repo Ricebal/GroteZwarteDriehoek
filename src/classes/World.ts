@@ -2,6 +2,8 @@ import { BaseGameEntity } from "./BaseGameEntity";
 import { Planet } from "./Planet";
 import { BigBlackTriangle } from "./BigBlackTriangle";
 import { SmallBlueCircle } from "./SmallBlueCircle";
+import { Vector } from "./Vector";
+import { Config } from "./Config";
 
 export class World {
     private canvas: HTMLCanvasElement;
@@ -15,6 +17,7 @@ export class World {
         this.canvas = canvas;
         this.canvas.width = this.width;
         this.canvas.height = this.height;
+        this.canvas.addEventListener("mousemove", this.onMouseMove, false);
         this.ctx = this.canvas.getContext("2d");
         this.gameObjects = [];
         this.planets = [];
@@ -33,5 +36,10 @@ export class World {
         for (let i = 0; i < this.gameObjects.length; i++) {
             this.gameObjects[i].update();
         }
+    }
+
+    public onMouseMove(e: MouseEvent): void {
+        let rect = e.srcElement.getBoundingClientRect();
+        Config.mousePos = new Vector(e.clientX - rect.left, e.clientY - rect.top);
     }
 }

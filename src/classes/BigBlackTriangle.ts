@@ -11,25 +11,18 @@ export class BigBlackTriangle extends MovingGameEntity {
         super(x, y, world);
         this.acceleration = new Vector();
         this.velocity = new Vector();
-        this.maxSpeed = 10;
-        this.maxForce = 0.1;
+        this.maxSpeed = 0.5;
+        this.maxForce = 0.3;
         this.size = 10;
 
         this.behaviours = [];
-        this.behaviours.push(new SeekBehaviour(this, this.world.gameObjects[0].position));
-    }
-
-    private seek(target: BaseGameEntity): Vector {
-        let desired = Vector.sub(target.position, this.position);
-        desired.normalize();
-        desired.mult(this.maxSpeed);
-
-        let steer = Vector.sub(desired, this.velocity);
-        steer.limit(this.maxForce);
-        return steer;
     }
 
     private applyForce(): void {
+        if (this.world.gameObjects[2] && this.behaviours.length === 0) {
+            this.behaviours.push(new SeekBehaviour(this, this.world.gameObjects[2].position));
+        }
+
         for (let key in this.behaviours) {
             this.acceleration.add(this.behaviours[key].apply());
         }
