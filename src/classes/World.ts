@@ -8,6 +8,7 @@ import { Config } from "./Config";
 export class World {
     private canvas: HTMLCanvasElement;
     public ctx: CanvasRenderingContext2D;
+
     private height: number = 900;
     private width: number = 900;
     public gameObjects: Array<BaseGameEntity>;

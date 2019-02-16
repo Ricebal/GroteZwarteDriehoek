@@ -50,11 +50,13 @@ export class SmallBlueCircle extends MovingGameEntity {
     private draw(): void {
         const ctx = this.world.ctx;
 
-        ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
-        ctx.beginPath();
-        ctx.arc(this.position.x, this.position.y, Config.panicDistance, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.closePath();
+        if (Config.panicDistanceVisualEnabled) {
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
+            ctx.beginPath();
+            ctx.arc(this.position.x, this.position.y, Config.panicDistance, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.closePath();
+        }
 
         ctx.fillStyle = 'rgb(0, 0, 255)';
         ctx.beginPath();
