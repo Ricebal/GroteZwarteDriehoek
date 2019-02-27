@@ -1,5 +1,5 @@
-import { Vector } from "./classes/Vector";
-import { World } from "./classes/World";
+import { Vector } from "./Vector";
+import { World } from "./World";
 
 export class GraphNode {
     public position: Vector;

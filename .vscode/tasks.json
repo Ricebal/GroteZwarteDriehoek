@@ -24,7 +24,8 @@
             "args": [
                 "--watch"
             ],
-            "label": "Webpack: watch"
+            "label": "Webpack: watch",
+            "problemMatcher": []
         }
     ]
 }

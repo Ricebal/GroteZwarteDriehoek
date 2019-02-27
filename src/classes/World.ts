@@ -7,20 +7,20 @@ import { Config } from "./Config";
 import { NavGraph } from "./NavGraph";
 
 export class World {
-    private canvas: HTMLCanvasElement;
+    private _canvas: HTMLCanvasElement;
     public ctx: CanvasRenderingContext2D;
-    private height: number = 900;
-    private width: number = 900;
+    public height: number = 900;
+    public width: number = 900;
     public gameObjects: Array<BaseGameEntity>;
     public planets: Array<Planet>;
     public navGraph: NavGraph;
 
     constructor(canvas: HTMLCanvasElement) {
-        this.canvas = canvas;
-        this.canvas.width = this.width;
-        this.canvas.height = this.height;
-        this.canvas.addEventListener("mousemove", this.onMouseMove, false);
-        this.ctx = this.canvas.getContext("2d");
+        this._canvas = canvas;
+        this._canvas.width = this.width;
+        this._canvas.height = this.height;
+        this._canvas.addEventListener("mousemove", this.onMouseMove, false);
+        this.ctx = this._canvas.getContext("2d");
         this.gameObjects = [];
         this.planets = [];
         this.gameObjects.push(new Planet(450, 450, this));
@@ -31,7 +31,7 @@ export class World {
                 this.planets.push(<Planet>this.gameObjects[i]);
             }
         }
-        this.navGraph = new NavGraph(10, this);
+        this.navGraph = new NavGraph(15, this);
     }
 
     public render(): void {
