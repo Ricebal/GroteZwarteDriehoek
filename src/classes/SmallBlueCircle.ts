@@ -18,7 +18,6 @@ export class SmallBlueCircle extends MovingGameEntity {
     private applyForce(): void {
         if (this.world.gameObjects[1].position && Vector.distanceSq(this.world.gameObjects[1].position, this.position) < Math.pow(Config.panicDistance, 2)) {
             this.behaviours = [new FleeBehaviour(this, this.world.gameObjects[1].position)];
-            console.log('Fleeing!');
         } else {
             this.behaviours = [new WanderBehaviour(this)];
         }

@@ -4,6 +4,7 @@ import { BigBlackTriangle } from "./BigBlackTriangle";
 import { SmallBlueCircle } from "./SmallBlueCircle";
 import { Vector } from "./Vector";
 import { Config } from "./Config";
+import { NavGraph } from "./NavGraph";
 
 export class World {
     private canvas: HTMLCanvasElement;
@@ -12,6 +13,7 @@ export class World {
     private width: number = 900;
     public gameObjects: Array<BaseGameEntity>;
     public planets: Array<Planet>;
+    public navGraph: NavGraph;
 
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
@@ -29,6 +31,7 @@ export class World {
                 this.planets.push(<Planet>this.gameObjects[i]);
             }
         }
+        this.navGraph = new NavGraph(10, this);
     }
 
     public render(): void {
@@ -36,6 +39,7 @@ export class World {
         for (let i = 0; i < this.gameObjects.length; i++) {
             this.gameObjects[i].update();
         }
+        this.navGraph.draw();
     }
 
     public onMouseMove(e: MouseEvent): void {
