@@ -16,6 +16,9 @@ class App {
 
     const panicDistanceCheckbox = <HTMLInputElement>document.getElementById('panicDistanceCheckbox');
     panicDistanceCheckbox.addEventListener("click", Config.onPanicDistanceToggled, false);
+
+    const navGridCheckbox = <HTMLInputElement>document.getElementById('navGridCheckbox');
+    navGridCheckbox.addEventListener("click", Config.onNavGridToggled, false);
   }
 
   private gameLoop(): void {

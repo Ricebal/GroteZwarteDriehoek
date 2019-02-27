@@ -36,10 +36,12 @@ export class World {
 
     public render(): void {
         this.ctx.clearRect(0, 0, this.width, this.height);
+        if (Config.navGridVisualEnabled)
+            this.navGraph.draw();
+
         for (let i = 0; i < this.gameObjects.length; i++) {
             this.gameObjects[i].update();
         }
-        this.navGraph.draw();
     }
 
     public onMouseMove(e: MouseEvent): void {

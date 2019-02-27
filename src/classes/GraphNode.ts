@@ -16,7 +16,7 @@ export class GraphNode {
         let ctx = this.world.ctx;
         ctx.fillStyle = 'rgb(255, 0, 0)';
         ctx.beginPath();
-        ctx.arc(this.position.x, this.position.y, 4, 0, 2 * Math.PI);
+        ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
         ctx.stroke();
         ctx.fill();
         ctx.closePath();
