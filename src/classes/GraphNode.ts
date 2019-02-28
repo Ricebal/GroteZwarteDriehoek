@@ -25,12 +25,18 @@ export class GraphNode {
         ctx.fill();
         ctx.closePath();
 
-        for (let key in this.neighbours) {
-            ctx.beginPath();
-            ctx.moveTo(this.position.x, this.position.y);
-            ctx.lineTo(this.neighbours[key].destination.position.x, this.neighbours[key].destination.position.y);
-            ctx.closePath();
-            ctx.stroke();
-        }
+        // for (let key in this.neighbours) {
+        //     ctx.beginPath();
+        //     ctx.moveTo(this.position.x, this.position.y);
+        //     ctx.lineTo(this.neighbours[key].destination.position.x, this.neighbours[key].destination.position.y);
+        //     ctx.closePath();
+        //     ctx.stroke();
+        // }
+
+        ctx.beginPath();
+        ctx.moveTo(this.position.x, this.position.y);
+        ctx.lineTo(this.previousNode.position.x, this.previousNode.position.y);
+        ctx.closePath();
+        ctx.stroke();
     }
 }

@@ -8,6 +8,7 @@ import { Config } from './Config';
 
 export class BigBlackTriangle extends MovingGameEntity {
     public size: number;
+    public pathTarget: Vector;
 
     constructor(x: number, y: number, world: World) {
         super(x, y, world);
@@ -16,7 +17,6 @@ export class BigBlackTriangle extends MovingGameEntity {
         this.maxSpeed = 0.5;
         this.maxForce = 0.3;
         this.size = 10;
-
         this.behaviours = [];
     }
 
@@ -25,13 +25,18 @@ export class BigBlackTriangle extends MovingGameEntity {
         //     this.behaviours.push(new SeekBehaviour(this, this.world.gameObjects[2].position));
         // }
 
-        // for (let key in this.behaviours) {
-        //     this.acceleration.add(this.behaviours[key].apply());
-        // }
+        if (!this.pathTarget && Config.mousePos)
+            this.pathTarget = Config.mousePos;
 
-        if (this.behaviours.length === 0 && Config.mousePos) {
-            this.behaviours = [new PathfindingBehaviour(this, Config.mousePos)];
+        if (this.pathTarget && ((Math.abs(this.pathTarget.x - Config.mousePos.x) * 2) + (Math.abs(this.pathTarget.y - Config.mousePos.y) * 2) > 0.2)) {
+            this.pathTarget = Config.mousePos.clone();
+            this.behaviours = [new PathfindingBehaviour(this, this.pathTarget)];
         }
+
+        for (let key in this.behaviours) {
+            this.acceleration.add(this.behaviours[key].apply());
+        }
+
 
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.maxSpeed);

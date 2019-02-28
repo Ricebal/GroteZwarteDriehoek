@@ -20,14 +20,19 @@ export class NavGraph {
     }
 
     public findPath(start: Vector, destination: Vector): Array<Vector> {
+        this.nodes.forEach(e => {
+            e.known = false;
+            e.previousNode = null;
+        });
+
         let startNode: GraphNode = this.nodes[0];
         let destinationNode: GraphNode = this.nodes[0];
 
         this.nodes.forEach(e => {
-            if (Math.abs(start.x - e.position.x) <= Math.abs(startNode.position.x - e.position.x) && Math.abs(start.y - e.position.y) <= Math.abs(startNode.position.y - e.position.y))
+            if ((Math.abs(start.x - e.position.x) * 2) + (Math.abs(start.y - e.position.y) * 2) < (Math.abs(startNode.position.x - e.position.x) * 2) + (Math.abs(startNode.position.y - e.position.y) * 2))
                 startNode = e;
 
-            if (Math.abs(destination.x - e.position.x) <= Math.abs(destinationNode.position.x - e.position.x) && Math.abs(destination.y - e.position.y) <= Math.abs(destinationNode.position.y - e.position.y))
+            if ((Math.abs(destination.x - e.position.x) * 2) + (Math.abs(destination.y - e.position.y) * 2) < (Math.abs(destinationNode.position.x - e.position.x) * 2) + (Math.abs(destinationNode.position.y - e.position.y) * 2))
                 destinationNode = e;
         });
 

@@ -19,7 +19,7 @@ export class WanderBehaviour extends Behaviour {
         wanderTarget.normalize();
         wanderTarget.mult(wanderRadius);
 
-        // Add circle to tne world
+        // Add circle to the world
         let targetWorld: Vector = this.owner.position.clone().add(this.owner.velocity.clone().normalize().mult(wanderDistance)).add(wanderTarget);
 
         const seekBehaviour = new SeekBehaviour(this.owner, targetWorld);
