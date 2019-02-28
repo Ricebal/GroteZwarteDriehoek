@@ -2,6 +2,7 @@ import { GraphNode } from "./GraphNode";
 import { World } from "./World";
 import { Config } from "./Config";
 import { GraphEdge } from "./GraphEdge";
+import { Vector } from "./Vector";
 
 export class NavGraph {
     public nodes: Array<GraphNode>;
@@ -16,10 +17,30 @@ export class NavGraph {
         this.floodFill(10, 10);
         this.connectNodes();
 
-        this.findPath(this.nodes[5], this.nodes[576]);
     }
 
-    public findPath(start: GraphNode, destination: GraphNode): void /* Array<GraphNode> */ {
+    public findPath(start: Vector, destination: Vector): Array<Vector> {
+        let startNode: GraphNode = this.nodes[0];
+        let destinationNode: GraphNode = this.nodes[0];
+
+        this.nodes.forEach(e => {
+            if (Math.abs(start.x - e.position.x) <= Math.abs(startNode.position.x - e.position.x) && Math.abs(start.y - e.position.y) <= Math.abs(startNode.position.y - e.position.y))
+                startNode = e;
+
+            if (Math.abs(destination.x - e.position.x) <= Math.abs(destinationNode.position.x - e.position.x) && Math.abs(destination.y - e.position.y) <= Math.abs(destinationNode.position.y - e.position.y))
+                destinationNode = e;
+        });
+
+        let nodePath: Array<GraphNode> = this.findPathAlgoritm(startNode, destinationNode);
+        let vectorPath: Array<Vector> = [];
+        nodePath.forEach(e => {
+            vectorPath.push(e.position);
+        });
+
+        return vectorPath;
+    }
+
+    public findPathAlgoritm(start: GraphNode, destination: GraphNode): Array<GraphNode> {
         let priorityQueue: Array<GraphNode> = [start];
         while (priorityQueue.length > 0) {
             let currentNode: GraphNode = priorityQueue[0];
@@ -49,7 +70,7 @@ export class NavGraph {
         this.path = [];
         this.listPath(destination, this.path);
 
-        // return;
+        return this.path;
     }
 
     private listPath(node: GraphNode, array: Array<GraphNode>) {

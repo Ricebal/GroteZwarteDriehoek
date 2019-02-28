@@ -17,7 +17,8 @@ export class World {
         this._canvas = canvas;
         this._canvas.width = Config.canvasSize.x;
         this._canvas.height = Config.canvasSize.y;
-        this._canvas.addEventListener("mousemove", this.onMouseMove, false);
+        // this._canvas.addEventListener("mousemove", this.onMouseMove, false);
+        this._canvas.addEventListener("click", this.onMouseClick, false);
         this.ctx = this._canvas.getContext("2d");
         this.gameObjects = [];
         this.planets = [];
@@ -42,8 +43,13 @@ export class World {
         }
     }
 
-    public onMouseMove(e: MouseEvent): void {
+    public onMouseClick(e: MouseEvent): void {
         let rect = e.srcElement.getBoundingClientRect();
         Config.mousePos = new Vector(e.clientX - rect.left, e.clientY - rect.top);
     }
+
+    // public onMouseMove(e: MouseEvent): void {
+    //     let rect = e.srcElement.getBoundingClientRect();
+    //     Config.mousePos = new Vector(e.clientX - rect.left, e.clientY - rect.top);
+    // }
 }
