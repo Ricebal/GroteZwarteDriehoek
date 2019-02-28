@@ -1,6 +1,8 @@
 import { Vector } from "./Vector";
 
 export class Config {
+    public static canvasSize: Vector;
+
     public static mousePos: Vector;
 
     public static panicDistanceVisualEnabled: boolean = false;

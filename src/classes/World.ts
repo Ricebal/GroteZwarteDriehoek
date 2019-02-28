@@ -9,16 +9,14 @@ import { NavGraph } from "./NavGraph";
 export class World {
     private _canvas: HTMLCanvasElement;
     public ctx: CanvasRenderingContext2D;
-    public height: number = 900;
-    public width: number = 900;
     public gameObjects: Array<BaseGameEntity>;
     public planets: Array<Planet>;
     public navGraph: NavGraph;
 
     constructor(canvas: HTMLCanvasElement) {
         this._canvas = canvas;
-        this._canvas.width = this.width;
-        this._canvas.height = this.height;
+        this._canvas.width = Config.canvasSize.x;
+        this._canvas.height = Config.canvasSize.y;
         this._canvas.addEventListener("mousemove", this.onMouseMove, false);
         this.ctx = this._canvas.getContext("2d");
         this.gameObjects = [];
@@ -31,11 +29,11 @@ export class World {
                 this.planets.push(<Planet>this.gameObjects[i]);
             }
         }
-        this.navGraph = new NavGraph(15, this);
+        this.navGraph = new NavGraph(30, this);
     }
 
     public render(): void {
-        this.ctx.clearRect(0, 0, this.width, this.height);
+        this.ctx.clearRect(0, 0, Config.canvasSize.x, Config.canvasSize.y);
         if (Config.navGridVisualEnabled)
             this.navGraph.draw();
 

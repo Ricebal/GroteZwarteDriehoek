@@ -1,5 +1,6 @@
 import { World } from './classes/World';
 import { Config } from './classes/Config';
+import { Vector } from './classes/Vector';
 
 class App {
   private _game: World;
@@ -28,7 +29,7 @@ class App {
 }
 
 window.onload = () => {
-
+  Config.canvasSize = new Vector(900, 900);
 
   const canvas = <HTMLCanvasElement>document.getElementById('main');
   let app = new App(new World(canvas));

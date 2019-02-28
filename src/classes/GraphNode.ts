@@ -1,10 +1,14 @@
 import { Vector } from "./Vector";
 import { World } from "./World";
+import { GraphEdge } from "./GraphEdge";
 
 export class GraphNode {
     public position: Vector;
-    public neighbours: Array<GraphNode>;
+    public neighbours: Array<GraphEdge>;
     public world: World;
+    public known: boolean = false;
+    public distance: number = 0;
+    public previousNode: GraphNode;
 
     constructor(x: number, y: number, world: World) {
         this.world = world;
@@ -20,5 +24,13 @@ export class GraphNode {
         ctx.stroke();
         ctx.fill();
         ctx.closePath();
+
+        for (let key in this.neighbours) {
+            ctx.beginPath();
+            ctx.moveTo(this.position.x, this.position.y);
+            ctx.lineTo(this.neighbours[key].destination.position.x, this.neighbours[key].destination.position.y);
+            ctx.closePath();
+            ctx.stroke();
+        }
     }
 }
