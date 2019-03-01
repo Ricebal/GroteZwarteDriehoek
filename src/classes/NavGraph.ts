@@ -3,6 +3,7 @@ import { World } from "./World";
 import { Config } from "./Config";
 import { GraphEdge } from "./GraphEdge";
 import { Vector } from "./Vector";
+import { Planet } from "./Planet";
 
 export class NavGraph {
     public nodes: Array<GraphNode>;
@@ -31,12 +32,6 @@ export class NavGraph {
         let destinationNode: GraphNode = this.nodes[0];
 
         this.nodes.forEach(e => {
-            // if ((Math.abs(start.x - e.position.x) * 2) + (Math.abs(start.y - e.position.y) * 2) < (Math.abs(startNode.position.x - e.position.x) * 2) + (Math.abs(startNode.position.y - e.position.y) * 2))
-            //     startNode = e;
-
-            // if ((Math.abs(destination.x - e.position.x) * 2) + (Math.abs(destination.y - e.position.y) * 2) < (Math.abs(destinationNode.position.x - e.position.x) * 2) + (Math.abs(destinationNode.position.y - e.position.y) * 2))
-            //     destinationNode = e;
-
             if (Vector.distanceSq(start, e.position) < Vector.distanceSq(start, startNode.position))
                 startNode = e;
 
@@ -101,6 +96,19 @@ export class NavGraph {
 
         // Check if valid space
         if (this.nodes.some(e => e.position.x === x && e.position.y === y))
+            return;
+
+        let planetFound: boolean = false;
+        this.world.gameObjects.forEach(e => {
+            if (e instanceof Planet) {
+                if (Vector.distanceSq(e.position, new Vector(x, y)) < Math.pow(e.size, 2) * 1.1) {
+                    planetFound = true;
+                    return;
+                }
+            }
+        });
+
+        if (planetFound)
             return;
 
         const newNode: GraphNode = new GraphNode(x, y, this.world);

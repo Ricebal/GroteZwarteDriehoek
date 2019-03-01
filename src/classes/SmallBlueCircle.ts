@@ -1,9 +1,11 @@
 import { MovingGameEntity } from "./MovingGameEntity";
 import { World } from "./World";
+import { Planet } from "./Planet";
 import { Config } from "./Config";
 import { FleeBehaviour } from "./behaviours/FleeBehaviour";
 import { Vector } from "./Vector";
 import { WanderBehaviour } from "./behaviours/WanderBehaviour";
+import { ObstacleAvoidBehaviour } from "./behaviours/ObstacleAvoidBehaviour";
 
 export class SmallBlueCircle extends MovingGameEntity {
 
@@ -20,6 +22,12 @@ export class SmallBlueCircle extends MovingGameEntity {
             this.behaviours = [new FleeBehaviour(this, this.world.gameObjects[1].position)];
         } else {
             this.behaviours = [new WanderBehaviour(this)];
+        }
+        for (let i = 0; i < this.world.gameObjects.length; i++) {
+            if (this.world.gameObjects[i] instanceof Planet && Vector.distanceSq(this.world.gameObjects[i].position, this.position) < Math.pow((<Planet>this.world.gameObjects[i]).size, 2) + 100) {
+
+                this.behaviours.push(new ObstacleAvoidBehaviour(this, this.world.gameObjects[i].position, ((<Planet>this.world.gameObjects[i]).size) / 2));
+            }
         }
 
         for (let key in this.behaviours) {

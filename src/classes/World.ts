@@ -1,4 +1,5 @@
 import { BaseGameEntity } from "./BaseGameEntity";
+import { Target } from "./Target";
 import { Planet } from "./Planet";
 import { BigBlackTriangle } from "./BigBlackTriangle";
 import { SmallBlueCircle } from "./SmallBlueCircle";
@@ -10,7 +11,6 @@ export class World {
     private _canvas: HTMLCanvasElement;
     public ctx: CanvasRenderingContext2D;
     public gameObjects: Array<BaseGameEntity>;
-    public planets: Array<Planet>;
     public navGraph: NavGraph;
 
     constructor(canvas: HTMLCanvasElement) {
@@ -21,14 +21,11 @@ export class World {
         this._canvas.addEventListener("click", this.onMouseClick, false);
         this.ctx = this._canvas.getContext("2d");
         this.gameObjects = [];
-        this.planets = [];
-        this.gameObjects.push(new Planet(450, 450, this));
+        this.gameObjects.push(new Target(450, 450, this));
         this.gameObjects.push(new BigBlackTriangle(200, 200, this));
         this.gameObjects.push(new SmallBlueCircle(600, 600, this));
-        for (let i = 0; i < this.gameObjects.length; i++) {
-            if (this.gameObjects[i] instanceof Planet) {
-                this.planets.push(<Planet>this.gameObjects[i]);
-            }
+        for (let i = 0; i < 40; i++) {
+            this.gameObjects.push(new Planet(this));
         }
         this.navGraph = new NavGraph(30, this);
     }
