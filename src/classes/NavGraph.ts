@@ -131,8 +131,8 @@ export class NavGraph {
 
     public draw(): void {
         let ctx = this.world.ctx;
-        for (let key in this.path) {
-            this.path[key].draw();
+        for (let key in this.nodes) {
+            this.nodes[key].draw();
         }
     }
 

@@ -19,28 +19,34 @@ export class GraphNode {
 
     public draw(): void {
         let ctx = this.world.ctx;
-        ctx.fillStyle = 'rgb(255, 0, 0)';
+        ctx.fillStyle = 'rgba(255, 0, 0, 0.2)';
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
         ctx.beginPath();
-        ctx.arc(this.position.x, this.position.y, 3, 0, 2 * Math.PI);
+        ctx.arc(this.position.x, this.position.y, 2, 0, 2 * Math.PI);
         ctx.stroke();
         ctx.fill();
         ctx.closePath();
 
-        ctx.font = "15px Georgia";
-        ctx.fillText(`${this.distance} + ${this.heuristic}`, this.position.x, this.position.y);
+        for (let key in this.neighbours) {
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.beginPath();
+            ctx.moveTo(this.position.x, this.position.y);
+            ctx.lineTo(this.neighbours[key].destination.position.x, this.neighbours[key].destination.position.y);
+            ctx.closePath();
+            ctx.stroke();
+        }
 
-        // for (let key in this.neighbours) {
-        //     ctx.beginPath();
-        //     ctx.moveTo(this.position.x, this.position.y);
-        //     ctx.lineTo(this.neighbours[key].destination.position.x, this.neighbours[key].destination.position.y);
-        //     ctx.closePath();
-        //     ctx.stroke();
-        // }
+        if (this.world.navGraph.path && this.world.navGraph.path.some(e => e === this)) {
+            ctx.fillStyle = 'rgba(0, 0, 0, 1)'
+            ctx.font = "15px Georgia";
+            ctx.fillText(`${this.distance} + ${this.heuristic}`, this.position.x, this.position.y);
 
-        ctx.beginPath();
-        ctx.moveTo(this.position.x, this.position.y);
-        ctx.lineTo(this.previousNode.position.x, this.previousNode.position.y);
-        ctx.closePath();
-        ctx.stroke();
+            ctx.strokeStyle = 'rgba(255, 0, 0, 1)';
+            ctx.beginPath();
+            ctx.moveTo(this.position.x, this.position.y);
+            ctx.lineTo(this.previousNode.position.x, this.previousNode.position.y);
+            ctx.closePath();
+            ctx.stroke();
+        }
     }
 }
