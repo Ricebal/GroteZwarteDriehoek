@@ -31,10 +31,16 @@ export class NavGraph {
         let destinationNode: GraphNode = this.nodes[0];
 
         this.nodes.forEach(e => {
-            if ((Math.abs(start.x - e.position.x) * 2) + (Math.abs(start.y - e.position.y) * 2) < (Math.abs(startNode.position.x - e.position.x) * 2) + (Math.abs(startNode.position.y - e.position.y) * 2))
+            // if ((Math.abs(start.x - e.position.x) * 2) + (Math.abs(start.y - e.position.y) * 2) < (Math.abs(startNode.position.x - e.position.x) * 2) + (Math.abs(startNode.position.y - e.position.y) * 2))
+            //     startNode = e;
+
+            // if ((Math.abs(destination.x - e.position.x) * 2) + (Math.abs(destination.y - e.position.y) * 2) < (Math.abs(destinationNode.position.x - e.position.x) * 2) + (Math.abs(destinationNode.position.y - e.position.y) * 2))
+            //     destinationNode = e;
+
+            if (Vector.distanceSq(start, e.position) < Vector.distanceSq(start, startNode.position))
                 startNode = e;
 
-            if ((Math.abs(destination.x - e.position.x) * 2) + (Math.abs(destination.y - e.position.y) * 2) < (Math.abs(destinationNode.position.x - e.position.x) * 2) + (Math.abs(destinationNode.position.y - e.position.y) * 2))
+            if (Vector.distanceSq(destination, e.position) < Vector.distanceSq(destination, destinationNode.position))
                 destinationNode = e;
         });
 
