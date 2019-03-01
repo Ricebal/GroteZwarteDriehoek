@@ -1,4 +1,5 @@
 import { BaseGameEntity } from "./BaseGameEntity";
+import { Target } from "./Target";
 import { Planet } from "./Planet";
 import { BigBlackTriangle } from "./BigBlackTriangle";
 
@@ -18,7 +19,8 @@ export class World {
         this.gameObjects = [];
         World.planets = [];
         this.gameObjects.push(new BigBlackTriangle(200, 200, this.ctx));
-        this.gameObjects.push(new Planet(450, 450, this.ctx));
+        this.gameObjects.push(new Target(450, 450, this.ctx));
+        this.gameObjects.push(new Planet(150, 150, this.ctx));
         for (let i = 0; i < this.gameObjects.length; i++) {
             if (this.gameObjects[i] instanceof Planet) {
                 World.planets.push(<Planet>this.gameObjects[i]);
