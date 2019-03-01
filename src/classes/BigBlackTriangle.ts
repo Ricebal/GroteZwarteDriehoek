@@ -3,6 +3,8 @@ import { Vector } from './Vector';
 import { MovingGameEntity } from './MovingGameEntity';
 import { BaseGameEntity } from './BaseGameEntity';
 import { SeekBehaviour } from './behaviours/SeekBehaviour';
+import { Planet } from './Planet';
+import { ObstacleAvoidBehaviour } from './behaviours/ObstacleAvoidBehaviour';
 
 export class BigBlackTriangle extends MovingGameEntity {
     public size: number;
@@ -21,6 +23,13 @@ export class BigBlackTriangle extends MovingGameEntity {
     private applyForce(): void {
         if (this.world.gameObjects[2] && this.behaviours.length === 0) {
             this.behaviours.push(new SeekBehaviour(this, this.world.gameObjects[2].position));
+        }
+
+        for (let i = 0; i < this.world.gameObjects.length; i++) {
+            if (this.world.gameObjects[i] instanceof Planet && Vector.distanceSq(this.world.gameObjects[i].position, this.position) < Math.pow((<Planet>this.world.gameObjects[i]).size, 2) + 100) {
+
+                this.behaviours.push(new ObstacleAvoidBehaviour(this, this.world.gameObjects[i].position, ((<Planet>this.world.gameObjects[i]).size) / 2));
+            }
         }
 
         for (let key in this.behaviours) {

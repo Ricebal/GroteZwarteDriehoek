@@ -1,4 +1,5 @@
 import { BaseGameEntity } from "./BaseGameEntity";
+import { Target } from "./Target";
 import { Planet } from "./Planet";
 import { BigBlackTriangle } from "./BigBlackTriangle";
 import { SmallBlueCircle } from "./SmallBlueCircle";
@@ -21,15 +22,13 @@ export class World {
         this.canvas.addEventListener("mousemove", this.onMouseMove, false);
         this.ctx = this.canvas.getContext("2d");
         this.gameObjects = [];
-        this.planets = [];
-        this.gameObjects.push(new Planet(450, 450, this));
+        this.gameObjects.push(new Target(450, 450, this));
         this.gameObjects.push(new BigBlackTriangle(200, 200, this));
         this.gameObjects.push(new SmallBlueCircle(600, 600, this));
-        for (let i = 0; i < this.gameObjects.length; i++) {
-            if (this.gameObjects[i] instanceof Planet) {
-                this.planets.push(<Planet>this.gameObjects[i]);
-            }
+        for (let i = 0; i < 40; i++) {
+            this.gameObjects.push(new Planet(this));
         }
+
     }
 
     public render(): void {
