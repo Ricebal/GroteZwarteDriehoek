@@ -9,6 +9,7 @@ export class GraphNode {
     public known: boolean = false;
     public distance: number = 0;
     public previousNode: GraphNode;
+    public heuristic: number = 0;
 
     constructor(x: number, y: number, world: World) {
         this.world = world;
@@ -24,6 +25,9 @@ export class GraphNode {
         ctx.stroke();
         ctx.fill();
         ctx.closePath();
+
+        ctx.font = "15px Georgia";
+        ctx.fillText(`${this.distance} + ${this.heuristic}`, this.position.x, this.position.y);
 
         // for (let key in this.neighbours) {
         //     ctx.beginPath();

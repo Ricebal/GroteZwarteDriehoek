@@ -23,6 +23,8 @@ export class NavGraph {
         this.nodes.forEach(e => {
             e.known = false;
             e.previousNode = null;
+            e.distance = 0;
+            e.heuristic = Math.abs(e.position.x - destination.x) + Math.abs(e.position.y - destination.y);
         });
 
         let startNode: GraphNode = this.nodes[0];
@@ -51,20 +53,20 @@ export class NavGraph {
             let currentNode: GraphNode = priorityQueue[0];
 
             // Get highest prio node
-            for (let key in priorityQueue) {
-                if (!priorityQueue[key].known && priorityQueue[key].distance < currentNode.distance)
-                    currentNode = priorityQueue[key];
-            }
+            priorityQueue.forEach(e => {
+                if (!e.known && e.distance < currentNode.distance)
+                    currentNode = e;
+            });
 
             // Fill priority queue
-            for (let key in currentNode.neighbours) {
-                if (!currentNode.neighbours[key].destination.known) {
-                    currentNode.neighbours[key].destination.distance = currentNode.distance + currentNode.neighbours[key].cost;
-                    priorityQueue.push(currentNode.neighbours[key].destination);
-                    currentNode.neighbours[key].destination.previousNode = currentNode;
-                    currentNode.neighbours[key].destination.known = true;
+            currentNode.neighbours.forEach(e => {
+                if (!e.destination.known || e.destination.distance > currentNode.distance + e.cost + e.destination.heuristic) {
+                    e.destination.distance = currentNode.distance + e.cost + e.destination.heuristic;
+                    priorityQueue.push(e.destination);
+                    e.destination.previousNode = currentNode;
+                    e.destination.known = true;
                 }
-            }
+            });
 
             // Set current known to true and remove from queue
             currentNode.known = true;
@@ -108,19 +110,23 @@ export class NavGraph {
     }
 
     private connectNodes(): void {
-        for (let i in this.nodes) {
-            for (let j in this.nodes) {
+        this.nodes.forEach(node1 => {
+            this.nodes.forEach(node2 => {
                 if (
-                    this.nodes[i].position.x <= this.nodes[j].position.x + this.gridSize &&
-                    this.nodes[i].position.x >= this.nodes[j].position.x - this.gridSize &&
-                    this.nodes[i].position.y <= this.nodes[j].position.y + this.gridSize &&
-                    this.nodes[i].position.y >= this.nodes[j].position.y - this.gridSize &&
-                    !(this.nodes[i].position.x === this.nodes[j].position.x && this.nodes[i].position.y === this.nodes[j].position.y)
+                    node1.position.x <= node2.position.x + this.gridSize &&
+                    node1.position.x >= node2.position.x - this.gridSize &&
+                    node1.position.y <= node2.position.y + this.gridSize &&
+                    node1.position.y >= node2.position.y - this.gridSize &&
+                    !(node1.position.x === node2.position.x && node1.position.y === node2.position.y)
                 ) {
-                    this.nodes[i].neighbours.push(new GraphEdge(this.nodes[j], this.world));
+                    if (node1.position.x != node2.position.x && node1.position.y != node2.position.y) {
+                        node1.neighbours.push(new GraphEdge(node2, this.world, 1.5));
+                    } else {
+                        node1.neighbours.push(new GraphEdge(node2, this.world, 1));
+                    }
                 }
-            }
-        }
+            });
+        });
     }
 
     public draw(): void {

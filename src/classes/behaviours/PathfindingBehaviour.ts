@@ -27,7 +27,11 @@ export class PathfindingBehaviour extends Behaviour {
                 this._seek = new SeekBehaviour(this.owner, this.path[0]);
             }
 
-            return this._seek.apply();
+            if (this.path.length > 0) {
+                return this._seek.apply();
+            } else {
+                return new Vector();
+            }
         }
 
         return new Vector();

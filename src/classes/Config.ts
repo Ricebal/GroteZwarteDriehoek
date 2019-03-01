@@ -8,7 +8,7 @@ export class Config {
     public static panicDistanceVisualEnabled: boolean = false;
     public static panicDistance: number = 200;
 
-    public static navGridVisualEnabled: boolean = false;
+    public static navGridVisualEnabled: boolean = true;
 
     public static onPanicDistanceChanged(e: Event): void {
         const textBox: HTMLInputElement = <HTMLInputElement>e.srcElement;
