@@ -31,11 +31,23 @@ export class NavGraph {
         let destinationNode: GraphNode = this.nodes[0];
 
         this.nodes.forEach(e => {
-            if ((Math.abs(start.x - e.position.x) * 2) + (Math.abs(start.y - e.position.y) * 2) < (Math.abs(startNode.position.x - e.position.x) * 2) + (Math.abs(startNode.position.y - e.position.y) * 2))
+            if (Math.abs(start.x - e.position.x) + Math.abs(start.y - e.position.y) < Math.abs(startNode.position.x - e.position.x) + Math.abs(startNode.position.y - e.position.y))
                 startNode = e;
 
-            if ((Math.abs(destination.x - e.position.x) * 2) + (Math.abs(destination.y - e.position.y) * 2) < (Math.abs(destinationNode.position.x - e.position.x) * 2) + (Math.abs(destinationNode.position.y - e.position.y) * 2))
+            if (Math.abs(destination.x - e.position.x) + Math.abs(destination.y - e.position.y) < Math.abs(destinationNode.position.x - e.position.x) + Math.abs(destinationNode.position.y - e.position.y))
                 destinationNode = e;
+            // console.log(`${Vector.distanceSq(start, e.position)} and ${Vector.distanceSq(startNode.position, e.position)}`);
+
+
+            // if (Vector.distanceSq(start, e.position) >= Vector.distanceSq(startNode.position, e.position)) {
+            //     console.log(`${Vector.distanceSq(start, e.position)} is further than ${Vector.distanceSq(startNode.position, e.position)}`);
+            //     startNode = e;
+            // } else {
+            //     console.log(`${Vector.distanceSq(start, e.position)} is closer than ${Vector.distanceSq(startNode.position, e.position)}`);
+
+            // }
+            // if (Vector.distanceSq(destination, e.position) < Vector.distanceSq(destinationNode.position, e.position))
+            //     destinationNode = e;
         });
 
         let nodePath: Array<GraphNode> = this.findPathAlgoritm(startNode, destinationNode);
