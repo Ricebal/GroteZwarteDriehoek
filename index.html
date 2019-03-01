@@ -11,13 +11,25 @@
       margin: 0;
     }
   </style>
+  <link rel="stylesheet" href="style.css">
+
   <script src="dist/bundle.js"></script>
 
 </head>
 
 <body>
 
-  <canvas id="main" width="900" height="900"></canvas>
+  <div class="flex-container">
+    <div class="flex-canvas">
+      <canvas id="main" width="900" height="900"></canvas>
+    </div>
+
+    <div class="flex-options">
+      Panic distance <br />
+      <input type="checkbox" id="panicDistanceCheckbox"> visual enabled <br />
+      <input type="text" id="panicDistanceText"> size <br />
+    </div>
+  </div>
 
 </body>
 

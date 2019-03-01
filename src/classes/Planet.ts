@@ -1,24 +1,26 @@
 import { Vector } from './Vector';
+import { MovingGameEntity } from './MovingGameEntity';
+import { World } from './World';
 import { StaticGameEntity } from './StaticGameEntity';
 
+
 export class Planet extends StaticGameEntity {
-    private right: boolean;
-    private up: boolean;
-    private vSpeed: number;
-    private hSpeed: number;
+    public size: number;
 
-    constructor(x: number, y: number, context: CanvasRenderingContext2D) {
-        super(x, y, context);
+    constructor(world: World) {
+        super(Math.floor(Math.random() * (+900 - +0)) + +0, Math.floor(Math.random() * (+900 - +0)) + +0, world);
+        this.size = Math.floor(Math.random() * (+60 - +10)) + +10;
     }
-
 
     public update(): void {
         this.draw();
     }
 
     private draw(): void {
-        this.ctx.beginPath();
-        this.ctx.arc(this.position.x + 10, this.position.y + 10, 20, 0, 2 * Math.PI);
-        this.ctx.stroke();
+        let ctx = this.world.ctx;
+        ctx.beginPath();
+        ctx.arc(this.position.x + (this.size / 2), this.position.y + (this.size / 2), this.size, 0, 2 * Math.PI);
+        ctx.fillStyle = "black";
+        ctx.fill();
     }
 }
