@@ -5,6 +5,8 @@ import { BaseGameEntity } from './BaseGameEntity';
 import { SeekBehaviour } from './behaviours/SeekBehaviour';
 import { PathfindingBehaviour } from './behaviours/PathfindingBehaviour';
 import { Config } from './Config';
+import { Planet } from './Planet';
+import { ObstacleAvoidBehaviour } from './behaviours/ObstacleAvoidBehaviour';
 
 export class BigBlackTriangle extends MovingGameEntity {
     public size: number;
@@ -32,6 +34,13 @@ export class BigBlackTriangle extends MovingGameEntity {
             this.pathTarget = Config.mousePos.clone();
             this.behaviours = [new PathfindingBehaviour(this, this.pathTarget)];
         }
+
+        // for (let i = 0; i < this.world.gameObjects.length; i++) {
+        //     if (this.world.gameObjects[i] instanceof Planet && Vector.distanceSq(this.world.gameObjects[i].position, this.position) < Math.pow((<Planet>this.world.gameObjects[i]).size, 2) + 100) {
+
+        //         this.behaviours.push(new ObstacleAvoidBehaviour(this, this.world.gameObjects[i].position, ((<Planet>this.world.gameObjects[i]).size) / 2));
+        //     }
+        // }
 
         for (let key in this.behaviours) {
             this.acceleration.add(this.behaviours[key].apply());
