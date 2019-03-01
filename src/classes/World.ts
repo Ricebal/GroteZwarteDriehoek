@@ -27,7 +27,7 @@ export class World {
         for (let i = 0; i < 40; i++) {
             this.gameObjects.push(new Planet(this));
         }
-        this.navGraph = new NavGraph(30, this);
+        this.navGraph = new NavGraph(10, this);
     }
 
     public render(): void {

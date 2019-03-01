@@ -25,7 +25,7 @@ export class NavGraph {
             e.known = false;
             e.previousNode = null;
             e.distance = 0;
-            e.heuristic = Math.abs(e.position.x - destination.x) + Math.abs(e.position.y - destination.y);
+            e.heuristic = Vector.distanceSq(e.position, destination);
         });
 
         let startNode: GraphNode = this.nodes[0];
@@ -101,7 +101,7 @@ export class NavGraph {
         let planetFound: boolean = false;
         this.world.gameObjects.forEach(e => {
             if (e instanceof Planet) {
-                if (Vector.distanceSq(e.position, new Vector(x, y)) < Math.pow(e.size, 2) * 1.1) {
+                if (Vector.distanceSq(e.position, new Vector(x, y)) < Math.pow(e.size, 2) * 1.2) {
                     planetFound = true;
                     return;
                 }
@@ -133,11 +133,7 @@ export class NavGraph {
                     node1.position.y >= node2.position.y - this.gridSize &&
                     !(node1.position.x === node2.position.x && node1.position.y === node2.position.y)
                 ) {
-                    if (node1.position.x != node2.position.x && node1.position.y != node2.position.y) {
-                        node1.neighbours.push(new GraphEdge(node2, this.world, 1.5));
-                    } else {
-                        node1.neighbours.push(new GraphEdge(node2, this.world, 1));
-                    }
+                    node1.neighbours.push(new GraphEdge(node2, this.world, Vector.distanceSq(node1.position, node2.position)));
                 }
             });
         });

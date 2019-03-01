@@ -30,7 +30,7 @@ export class BigBlackTriangle extends MovingGameEntity {
         if (!this.pathTarget && Config.mousePos)
             this.pathTarget = Config.mousePos;
 
-        if (this.pathTarget && ((Math.abs(this.pathTarget.x - Config.mousePos.x) * 2) + (Math.abs(this.pathTarget.y - Config.mousePos.y) * 2) > 0.2)) {
+        if (this.pathTarget && Vector.distanceSq(this.pathTarget, Config.mousePos) > 1) {
             this.pathTarget = Config.mousePos.clone();
             this.behaviours = [new PathfindingBehaviour(this, this.pathTarget)];
         }
