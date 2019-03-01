@@ -3,6 +3,7 @@ import { World } from "./World";
 import { Config } from "./Config";
 import { GraphEdge } from "./GraphEdge";
 import { Vector } from "./Vector";
+import { Planet } from "./Planet";
 
 export class NavGraph {
     public nodes: Array<GraphNode>;
@@ -107,6 +108,19 @@ export class NavGraph {
 
         // Check if valid space
         if (this.nodes.some(e => e.position.x === x && e.position.y === y))
+            return;
+
+        let planetFound: boolean = false;
+        this.world.gameObjects.forEach(e => {
+            if (e instanceof Planet) {
+                if (Vector.distanceSq(e.position, new Vector(x, y)) < Math.pow(e.size, 2) * 1.1) {
+                    planetFound = true;
+                    return;
+                }
+            }
+        });
+
+        if (planetFound)
             return;
 
         const newNode: GraphNode = new GraphNode(x, y, this.world);

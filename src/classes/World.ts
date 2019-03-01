@@ -11,7 +11,6 @@ export class World {
     private _canvas: HTMLCanvasElement;
     public ctx: CanvasRenderingContext2D;
     public gameObjects: Array<BaseGameEntity>;
-    public planets: Array<Planet>;
     public navGraph: NavGraph;
 
     constructor(canvas: HTMLCanvasElement) {
