@@ -16,17 +16,13 @@ export class BigBlackTriangle extends MovingGameEntity {
         super(x, y, world);
         this.acceleration = new Vector();
         this.velocity = new Vector();
-        this.maxSpeed = 0.5;
+        this.maxSpeed = 1.5;
         this.maxForce = 0.3;
         this.size = 10;
         this.behaviours = [];
     }
 
     private applyForce(): void {
-        // if (this.world.gameObjects[2] && this.behaviours.length === 0) {
-        //     this.behaviours.push(new SeekBehaviour(this, this.world.gameObjects[2].position));
-        // }
-
         if (!this.pathTarget && Config.mousePos)
             this.pathTarget = Config.mousePos;
 
@@ -35,17 +31,9 @@ export class BigBlackTriangle extends MovingGameEntity {
             this.behaviours = [new PathfindingBehaviour(this, this.pathTarget)];
         }
 
-        // for (let i = 0; i < this.world.gameObjects.length; i++) {
-        //     if (this.world.gameObjects[i] instanceof Planet && Vector.distanceSq(this.world.gameObjects[i].position, this.position) < Math.pow((<Planet>this.world.gameObjects[i]).size, 2) + 100) {
-
-        //         this.behaviours.push(new ObstacleAvoidBehaviour(this, this.world.gameObjects[i].position, ((<Planet>this.world.gameObjects[i]).size) / 2));
-        //     }
-        // }
-
         for (let key in this.behaviours) {
             this.acceleration.add(this.behaviours[key].apply());
         }
-
 
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.maxSpeed);

@@ -1,5 +1,9 @@
 import { Vector } from "./Vector";
 
+// Config file
+// This class contains static data or user manipulated settings through the ui
+// Don't instantiate this class
+
 export class Config {
     public static canvasSize: Vector;
 
