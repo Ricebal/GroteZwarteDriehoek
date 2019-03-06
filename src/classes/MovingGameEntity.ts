@@ -8,6 +8,7 @@ export class MovingGameEntity extends BaseGameEntity {
     public velocity: Vector;
     public maxSpeed: number;
     public maxForce: number;
+    public maxAvoidForce: number;
     public behaviours: Array<Behaviour>;
 
     constructor(x: number, y: number, world: World) {
