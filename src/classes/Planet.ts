@@ -19,7 +19,7 @@ export class Planet extends StaticGameEntity {
     private draw(): void {
         let ctx = this.world.ctx;
         ctx.beginPath();
-        ctx.arc(this.position.x + (this.size / 2), this.position.y + (this.size / 2), this.size, 0, 2 * Math.PI);
+        ctx.arc(this.position.x, this.position.y, this.size, 0, 2 * Math.PI);
         ctx.fillStyle = "black";
         ctx.fill();
     }
