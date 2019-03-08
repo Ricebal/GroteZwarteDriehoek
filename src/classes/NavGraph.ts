@@ -23,7 +23,6 @@ export class NavGraph {
     public findPath(start: Vector, destination: Vector): Array<Vector> {
         // Reset each node
         this.nodes.forEach(e => {
-            e.known = false;
             e.previousNode = null;
             e.distance = 0;
             e.heuristic = Math.sqrt(Vector.distanceSq(e.position, destination));
