@@ -26,7 +26,7 @@ export class NavGraph {
             e.known = false;
             e.previousNode = null;
             e.distance = 0;
-            e.heuristic = Vector.distanceSq(e.position, destination);
+            e.heuristic = Math.sqrt(Vector.distanceSq(e.position, destination));
         });
 
         // Take arbitrary starting nodes, in this case first in list
@@ -55,31 +55,39 @@ export class NavGraph {
     }
 
     public findPathAlgoritm(start: GraphNode, destination: GraphNode): Array<GraphNode> {
-        let priorityQueue: Array<GraphNode> = [start];
-        while (priorityQueue.length > 0) {
-            let currentNode: GraphNode = priorityQueue[0];
+        let open: Array<GraphNode> = [start];
+        let closed: Array<GraphNode> = [];
 
-            // Get highest prio node
-            priorityQueue.forEach(e => {
-                if (!e.known && e.distance < currentNode.distance)
-                    currentNode = e;
-            });
+        while (open.length > 0) {
+            let currentNode: GraphNode = open.reduce((a, b) => a.distance < b.distance ? a : b);
 
-            // Fill priority queue
-            currentNode.neighbours.forEach(e => {
-                if (!e.destination.known || e.destination.distance > currentNode.distance + e.cost + e.destination.heuristic) {
-                    e.destination.distance = currentNode.distance + e.cost + e.destination.heuristic;
-                    priorityQueue.push(e.destination);
-                    e.destination.previousNode = currentNode;
+            if (currentNode === destination)
+                break;
+
+            open = open.filter((v, i, a) => { return v !== currentNode });
+            closed.push(currentNode);
+
+            currentNode.neighbours.forEach(edge => {
+                let score: number = currentNode.distance + edge.cost;
+                let scoreIsBest: boolean = false;
+
+                if (!closed.some(e => e === edge.destination)) {
+
+                    if (!open.some(e => e === edge.destination)) {
+                        scoreIsBest = true;
+                        open.push(edge.destination);
+                    } else if (score + edge.destination.heuristic < edge.destination.distance && edge.destination.distance !== 0) {
+                        scoreIsBest = true;
+                    }
+
+                    if (scoreIsBest) {
+                        edge.destination.previousNode = currentNode;
+                        edge.destination.distance = score;
+                    }
                 }
             });
-
-            // Set current known to true and remove from queue
-            currentNode.known = true;
-            priorityQueue = priorityQueue.filter((value, index, arr) => {
-                return value !== currentNode;
-            });
         }
+
         this.path = [];
         this.listPath(destination, this.path);
 
@@ -142,7 +150,8 @@ export class NavGraph {
                     node1.position.y >= node2.position.y - this.gridSize &&
                     !(node1.position.x === node2.position.x && node1.position.y === node2.position.y)
                 ) {
-                    node1.neighbours.push(new GraphEdge(node2, this.world, Vector.distanceSq(node1.position, node2.position)));
+                    let newNode: GraphEdge = new GraphEdge(node2, this.world, Math.sqrt(Vector.distanceSq(node1.position, node2.position)));
+                    node1.neighbours.push(newNode);
                 }
             });
         });

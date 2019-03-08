@@ -23,7 +23,7 @@ export class World {
         this.gameObjects.push(new Target(450, 450, this));
         this.gameObjects.push(new BigBlackTriangle(200, 200, this));
         this.gameObjects.push(new SmallBlueCircle(600, 600, this));
-        for (let i = 0; i < 40; i++) {
+        for (let i = 0; i < 100; i++) {
             this.gameObjects.push(new Planet(this));
         }
         this.navGraph = new NavGraph(30, this);
