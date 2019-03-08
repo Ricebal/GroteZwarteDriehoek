@@ -6,7 +6,6 @@ export class GraphNode {
     public position: Vector;
     public neighbours: Array<GraphEdge>;
     public world: World;
-    public known: boolean = false;
     public distance: number = 0;
     public previousNode: GraphNode;
     public heuristic: number = 0;

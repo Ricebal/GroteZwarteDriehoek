@@ -22,7 +22,7 @@ export class PathfindingBehaviour extends Behaviour {
                 this._subBehaviour = new SeekBehaviour(this.owner, this.path[0]);
             }
 
-            if (Vector.distanceSq(this.owner.position, this.path[0]) < this.owner.world.navGraph.gridSize * 2) {
+            if (Vector.distanceSq(this.owner.position, this.path[0]) < Math.pow(this.owner.world.navGraph.gridSize, 2)) {
                 this.path = this.path.filter((value, index, arr) => {
                     return value !== this.path[0];
                 });
