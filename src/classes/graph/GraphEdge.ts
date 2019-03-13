@@ -1,5 +1,5 @@
 import { GraphNode } from "./GraphNode";
-import { World } from "./World";
+import { World } from "../World";
 
 export class GraphEdge {
     public destination: GraphNode;

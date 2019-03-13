@@ -1,6 +1,6 @@
-import { Vector } from './Vector';
+import { Vector } from '../Vector';
 import { MovingGameEntity } from './MovingGameEntity';
-import { World } from './World';
+import { World } from '../World';
 
 export class Target extends MovingGameEntity {
     private right: boolean;

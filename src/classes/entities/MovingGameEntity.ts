@@ -1,7 +1,7 @@
 import { BaseGameEntity } from "./BaseGameEntity";
-import { World } from "./World";
-import { Vector } from "./Vector";
-import { Behaviour } from "./behaviours/Behaviour";
+import { World } from "../World";
+import { Vector } from "../Vector";
+import { Behaviour } from "../behaviours/Behaviour";
 
 export class MovingGameEntity extends BaseGameEntity {
     public acceleration: Vector;

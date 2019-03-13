@@ -1,5 +1,5 @@
-import { Vector } from "./Vector";
-import { World } from "./World";
+import { Vector } from "../Vector";
+import { World } from "../World";
 
 export class BaseGameEntity {
     public position: Vector;

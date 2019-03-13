@@ -1,5 +1,5 @@
 import { Behaviour } from "./Behaviour";
-import { MovingGameEntity } from "../MovingGameEntity";
+import { MovingGameEntity } from "../entities/MovingGameEntity";
 import { Vector } from "../Vector";
 import { SeekBehaviour } from "./SeekBehaviour";
 import { ArriveBehaviour } from "./ArriveBehaviour";

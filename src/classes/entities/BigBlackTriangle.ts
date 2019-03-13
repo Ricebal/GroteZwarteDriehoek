@@ -1,12 +1,8 @@
-import { World } from './World';
-import { Vector } from './Vector';
+import { World } from '../World';
+import { Vector } from '../Vector';
 import { MovingGameEntity } from './MovingGameEntity';
-import { BaseGameEntity } from './BaseGameEntity';
-import { SeekBehaviour } from './behaviours/SeekBehaviour';
-import { PathfindingBehaviour } from './behaviours/PathfindingBehaviour';
-import { Config } from './Config';
-import { Planet } from './Planet';
-import { ObstacleAvoidBehaviour } from './behaviours/ObstacleAvoidBehaviour';
+import { PathfindingBehaviour } from '../behaviours/PathfindingBehaviour';
+import { Config } from '../Config';
 
 export class BigBlackTriangle extends MovingGameEntity {
     public size: number;
