@@ -3,6 +3,8 @@ import { Vector } from '../Vector';
 import { MovingGameEntity } from './MovingGameEntity';
 import { PathfindingBehaviour } from '../behaviours/PathfindingBehaviour';
 import { Config } from '../Config';
+import { FollowBehaviour } from '../behaviours/FollowBehaviour';
+import { SmallBlackTriangle } from './SmallBlackTriangle';
 
 export class BigBlackTriangle extends MovingGameEntity {
     public size: number;
@@ -27,9 +29,10 @@ export class BigBlackTriangle extends MovingGameEntity {
             this.behaviours = [new PathfindingBehaviour(this, this.pathTarget)];
         }
 
-        for (let key in this.behaviours) {
-            this.acceleration.add(this.behaviours[key].apply());
-        }
+
+        this.behaviours.forEach(e => {
+            this.acceleration.add(e.apply());
+        });
 
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.maxSpeed);

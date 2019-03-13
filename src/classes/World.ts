@@ -1,11 +1,11 @@
 import { BaseGameEntity } from "./entities/BaseGameEntity";
-import { Target } from "./entities/Target";
 import { Planet } from "./entities/Planet";
 import { BigBlackTriangle } from "./entities/BigBlackTriangle";
 import { SmallBlueCircle } from "./entities/SmallBlueCircle";
 import { Vector } from "./Vector";
 import { Config } from "./Config";
 import { NavGraph } from "./graph/NavGraph";
+import { SmallBlackTriangle } from "./entities/SmallBlackTriangle";
 
 export class World {
     private _canvas: HTMLCanvasElement;
@@ -20,8 +20,10 @@ export class World {
         this._canvas.addEventListener("click", this.onMouseClick, false);
         this.ctx = this._canvas.getContext("2d");
         this.gameObjects = [];
-        this.gameObjects.push(new Target(450, 450, this));
         this.gameObjects.push(new BigBlackTriangle(200, 200, this));
+        this.gameObjects.push(new SmallBlackTriangle(300, 300, this));
+        this.gameObjects[1].beh
+        this.gameObjects.push(new SmallBlackTriangle(300, 300, this));
         this.gameObjects.push(new SmallBlueCircle(600, 600, this));
         for (let i = 0; i < 0; i++) {
             this.gameObjects.push(new Planet(this));
