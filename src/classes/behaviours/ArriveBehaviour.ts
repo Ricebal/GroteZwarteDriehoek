@@ -1,5 +1,5 @@
 import { Behaviour } from "./Behaviour";
-import { MovingGameEntity } from "../MovingGameEntity";
+import { MovingGameEntity } from "../entities/MovingGameEntity";
 import { Vector } from "../Vector";
 
 export class ArriveBehaviour extends Behaviour {

@@ -1,4 +1,4 @@
-import { MovingGameEntity } from "../MovingGameEntity";
+import { MovingGameEntity } from "../entities/MovingGameEntity";
 import { Vector } from "../Vector";
 
 export abstract class Behaviour {

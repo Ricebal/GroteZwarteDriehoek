@@ -1,5 +1,5 @@
-import { Vector } from "./Vector";
-import { World } from "./World";
+import { Vector } from "../Vector";
+import { World } from "../World";
 import { GraphEdge } from "./GraphEdge";
 
 export class GraphNode {

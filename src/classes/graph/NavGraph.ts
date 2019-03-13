@@ -1,9 +1,9 @@
 import { GraphNode } from "./GraphNode";
-import { World } from "./World";
-import { Config } from "./Config";
+import { World } from "../World";
+import { Config } from "../Config";
 import { GraphEdge } from "./GraphEdge";
-import { Vector } from "./Vector";
-import { Planet } from "./Planet";
+import { Vector } from "../Vector";
+import { Planet } from "../entities/Planet";
 
 export class NavGraph {
     public nodes: Array<GraphNode>;

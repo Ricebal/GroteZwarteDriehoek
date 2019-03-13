@@ -1,6 +1,4 @@
-import { Vector } from './Vector';
-import { MovingGameEntity } from './MovingGameEntity';
-import { World } from './World';
+import { World } from '../World';
 import { StaticGameEntity } from './StaticGameEntity';
 
 

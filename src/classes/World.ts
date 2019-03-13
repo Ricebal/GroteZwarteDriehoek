@@ -1,11 +1,11 @@
-import { BaseGameEntity } from "./BaseGameEntity";
-import { Target } from "./Target";
-import { Planet } from "./Planet";
-import { BigBlackTriangle } from "./BigBlackTriangle";
-import { SmallBlueCircle } from "./SmallBlueCircle";
+import { BaseGameEntity } from "./entities/BaseGameEntity";
+import { Target } from "./entities/Target";
+import { Planet } from "./entities/Planet";
+import { BigBlackTriangle } from "./entities/BigBlackTriangle";
+import { SmallBlueCircle } from "./entities/SmallBlueCircle";
 import { Vector } from "./Vector";
 import { Config } from "./Config";
-import { NavGraph } from "./NavGraph";
+import { NavGraph } from "./graph/NavGraph";
 
 export class World {
     private _canvas: HTMLCanvasElement;
@@ -23,7 +23,7 @@ export class World {
         this.gameObjects.push(new Target(450, 450, this));
         this.gameObjects.push(new BigBlackTriangle(200, 200, this));
         this.gameObjects.push(new SmallBlueCircle(600, 600, this));
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 0; i++) {
             this.gameObjects.push(new Planet(this));
         }
         this.navGraph = new NavGraph(30, this);
