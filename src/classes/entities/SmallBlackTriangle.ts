@@ -9,21 +9,23 @@ import { BigBlackTriangle } from './BigBlackTriangle';
 export class SmallBlackTriangle extends MovingGameEntity {
     public size: number;
     public pathTarget: Vector;
+    public group: Array<SmallBlackTriangle>;
 
     constructor(x: number, y: number, world: World) {
         super(x, y, world);
         this.acceleration = new Vector();
         this.velocity = new Vector();
         this.maxSpeed = 1.5;
-        this.maxForce = 0.05;
-        this.size = 7.5;
+        this.maxForce = 0.07;
+        this.size = 5;
         this.behaviours = [];
+        this.group = [];
     }
 
     private applyForce(): void {
-        // if (this.world.gameObjects[1] && this.behaviours.length === 0) {
-        //     this.behaviours.push(new FollowBehaviour(this, <BigBlackTriangle>this.world.gameObjects[1]));
-        // }
+        if (this.world.gameObjects[1] && this.behaviours.length === 0 && this.group.length !== 0) {
+            this.behaviours.push(new FollowBehaviour(this, <BigBlackTriangle>this.world.gameObjects[0], this.group));
+        }
 
         this.behaviours.forEach(e => {
             this.acceleration.add(e.apply());
