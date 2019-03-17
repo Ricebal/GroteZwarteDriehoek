@@ -2,7 +2,7 @@ import { Behaviour } from "./Behaviour";
 import { MovingGameEntity } from "../entities/MovingGameEntity";
 import { Vector } from "../Vector";
 import { Config } from "../Config";
-import { Planet } from "../Planet";
+import { Planet } from "../entities/Planet";
 
 export class ObstacleAvoidBehaviour extends Behaviour {
     public ahead: Vector;

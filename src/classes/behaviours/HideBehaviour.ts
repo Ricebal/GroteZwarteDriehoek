@@ -1,8 +1,8 @@
 import { Behaviour } from "./Behaviour";
-import { MovingGameEntity } from "../MovingGameEntity";
+import { MovingGameEntity } from "../entities/MovingGameEntity";
 import { Vector } from "../Vector";
 import { Config } from "../Config";
-import { Planet } from "../Planet";
+import { Planet } from "../entities/Planet";
 
 export class HideBehaviour extends Behaviour {
     public target: Vector;
