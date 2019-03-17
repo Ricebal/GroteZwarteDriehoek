@@ -73,4 +73,9 @@ export class Vector {
         }
         return this;
     }
+
+    public angleDegrees(v2: Vector): number {
+        var angleDeg = Math.atan2(v2.y - this.y, v2.x - this.x) * 180 / Math.PI;
+        return angleDeg;
+    }
 }

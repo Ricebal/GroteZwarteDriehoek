@@ -17,7 +17,7 @@ export class BigBlackTriangle extends MovingGameEntity {
         super(x, y, world);
         this.acceleration = new Vector();
         this.velocity = new Vector();
-        this.maxSpeed = 1.5;
+        this.maxSpeed = 2.5;
         this.minSpeed = 0.3;
         this.maxForce = 1.3;
         this.maxAvoidForce = 0.02;

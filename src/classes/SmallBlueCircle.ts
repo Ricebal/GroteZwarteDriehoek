@@ -71,5 +71,24 @@ export class SmallBlueCircle extends MovingGameEntity {
         ctx.stroke();
         ctx.fill();
         ctx.closePath();
+
+
+        for (let i = 0; i < this.world.gameObjects.length; i++) {
+            if (this.world.gameObjects[i] instanceof Planet) {
+                var target = <Planet>this.world.gameObjects[i];
+                ctx.strokeStyle = 'rgb(0, 0, 255)';
+                ctx.beginPath();
+                ctx.lineTo(this.position.x, this.position.y);
+                var angle = this.position.angleDegrees(target.position);
+                angle += 90;
+
+                ctx.lineTo((((Math.cos(angle * Math.PI / 180)) * target.size) + target.position.x), ((Math.sin(angle * Math.PI / 180)) * target.size) + target.position.y);
+                angle -= 180;
+                ctx.moveTo(this.position.x, this.position.y);
+                ctx.lineTo((((Math.cos(angle * Math.PI / 180)) * target.size) + target.position.x), ((Math.sin(angle * Math.PI / 180)) * target.size) + target.position.y);
+                ctx.stroke();
+                ctx.closePath();
+            }
+        }
     }
 }
