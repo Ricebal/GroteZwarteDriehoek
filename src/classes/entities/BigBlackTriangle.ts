@@ -1,26 +1,29 @@
-import { World } from './World';
-import { Vector } from './Vector';
+import { World } from '../World';
+import { Vector } from '../Vector';
 import { MovingGameEntity } from './MovingGameEntity';
-import { BaseGameEntity } from './BaseGameEntity';
-import { SeekBehaviour } from './behaviours/SeekBehaviour';
+import { PathfindingBehaviour } from '../behaviours/PathfindingBehaviour';
+import { Config } from '../Config';
+import { FollowBehaviour } from '../behaviours/FollowBehaviour';
+import { SmallBlackTriangle } from './SmallBlackTriangle';
 import { Planet } from './Planet';
-import { ObstacleAvoidBehaviour } from './behaviours/ObstacleAvoidBehaviour';
+import { ObstacleAvoidBehaviour } from '../behaviours/ObstacleAvoidBehaviour';
 
 export class BigBlackTriangle extends MovingGameEntity {
     public size: number;
+    public pathTarget: Vector;
+    public minSpeed: number;
     public ahead: Vector;
     public ahead2: Vector;
-    public minSpeed: number;
     public lineOfSightPoint: Vector;
+
 
     constructor(x: number, y: number, world: World) {
         super(x, y, world);
         this.acceleration = new Vector();
         this.velocity = new Vector();
-        this.maxSpeed = 2.5;
+        this.maxSpeed = 1.5;
         this.minSpeed = 0.3;
-        this.maxForce = 1.3;
-        this.maxAvoidForce = 0.02;
+        this.maxForce = 0.025;
         this.size = 10;
         this.behaviours = [];
     }
@@ -32,24 +35,20 @@ export class BigBlackTriangle extends MovingGameEntity {
         return this.distance(obstacle.position, ahead) <= (obstacle.size) || this.distance(obstacle.position, ahead2) <= (obstacle.size);
     }
     private applyForce(): void {
-        for (let i = 0; i < this.world.gameObjects.length; i++) {
-            if (this.world.gameObjects[i] instanceof Planet) {
-                if (this.lineIntersectsCircle(this.ahead, this.lineOfSightPoint, (<Planet>this.world.gameObjects[i]))) {
-                    console.log("I can't see shit!");
-                }
-            }
-        }
+        if (!this.pathTarget && Config.mousePos)
+            this.pathTarget = Config.mousePos;
 
-        if (this.world.gameObjects[2] && this.behaviours.length === 0) {
-
-            this.behaviours.push(new SeekBehaviour(this, this.world.gameObjects[2].position));
+        if (this.pathTarget && Vector.distanceSq(this.pathTarget, Config.mousePos) > 1) {
+            this.pathTarget = Config.mousePos.clone();
+            this.behaviours = [new PathfindingBehaviour(this, this.pathTarget)];
         }
         this.behaviours.push(new ObstacleAvoidBehaviour(this))
 
 
-        for (let key in this.behaviours) {
-            this.acceleration.add(this.behaviours[key].apply());
-        }
+
+        this.behaviours.forEach(e => {
+            this.acceleration.add(e.apply());
+        });
 
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.maxSpeed);

@@ -13,6 +13,18 @@ export class Vector {
         return this;
     }
 
+    public rotate(n: number): Vector {
+        n = n * Math.PI / 180;
+        let ca: number = Math.cos(n);
+        let sa: number = Math.sin(n);
+        let x: number = ca * this.x - sa * this.y;
+        let y: number = sa * this.x + ca * this.y;
+
+        this.x = x;
+        this.y = y;
+        return this;
+    }
+
     public static sub(v1: Vector, v2: Vector): Vector {
         return new Vector(v1.x - v2.x, v1.y - v2.y);
     }

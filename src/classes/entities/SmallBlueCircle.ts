@@ -1,11 +1,11 @@
 import { MovingGameEntity } from "./MovingGameEntity";
-import { World } from "./World";
+import { World } from "../World";
 import { Planet } from "./Planet";
-import { Config } from "./Config";
-import { FleeBehaviour } from "./behaviours/FleeBehaviour";
-import { Vector } from "./Vector";
-import { WanderBehaviour } from "./behaviours/WanderBehaviour";
-import { ObstacleAvoidBehaviour } from "./behaviours/ObstacleAvoidBehaviour";
+import { Config } from "../Config";
+import { FleeBehaviour } from "../behaviours/FleeBehaviour";
+import { Vector } from "../Vector";
+import { WanderBehaviour } from "../behaviours/WanderBehaviour";
+import { ObstacleAvoidBehaviour } from "../behaviours/ObstacleAvoidBehaviour";
 
 export class SmallBlueCircle extends MovingGameEntity {
 
