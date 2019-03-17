@@ -3,33 +3,33 @@ import { Vector } from '../Vector';
 import { MovingGameEntity } from './MovingGameEntity';
 import { PathfindingBehaviour } from '../behaviours/PathfindingBehaviour';
 import { Config } from '../Config';
+import { FollowBehaviour } from '../behaviours/FollowBehaviour';
+import { BigBlackTriangle } from './BigBlackTriangle';
 
 export class SmallBlackTriangle extends MovingGameEntity {
     public size: number;
     public pathTarget: Vector;
+    public group: Array<SmallBlackTriangle>;
 
     constructor(x: number, y: number, world: World) {
         super(x, y, world);
         this.acceleration = new Vector();
         this.velocity = new Vector();
         this.maxSpeed = 1.5;
-        this.maxForce = 0.1;
-        this.size = 7.5;
+        this.maxForce = 0.07;
+        this.size = 5;
         this.behaviours = [];
+        this.group = [];
     }
 
     private applyForce(): void {
-        if (!this.pathTarget && Config.mousePos)
-            this.pathTarget = Config.mousePos;
-
-        if (this.pathTarget && Vector.distanceSq(this.pathTarget, Config.mousePos) > 1) {
-            this.pathTarget = Config.mousePos.clone();
-            this.behaviours = [new PathfindingBehaviour(this, this.pathTarget)];
+        if (this.world.gameObjects[1] && this.behaviours.length === 0 && this.group.length !== 0) {
+            this.behaviours.push(new FollowBehaviour(this, <BigBlackTriangle>this.world.gameObjects[0], this.group));
         }
 
-        for (let key in this.behaviours) {
-            this.acceleration.add(this.behaviours[key].apply());
-        }
+        this.behaviours.forEach(e => {
+            this.acceleration.add(e.apply());
+        });
 
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.maxSpeed);
