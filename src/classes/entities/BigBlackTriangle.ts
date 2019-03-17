@@ -71,17 +71,11 @@ export class BigBlackTriangle extends MovingGameEntity {
     private draw(): void {
         this.world.ctx.fillStyle = 'rgb(0, 0, 0)';
         this.world.ctx.beginPath();
+        console.log(this.position.x, this.position.y);
         this.world.ctx.moveTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 1.5) * this.size, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 1.5) * this.size);
         this.world.ctx.lineTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x)) * this.size * 4, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x)) * this.size * 4);
         this.world.ctx.lineTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size);
         this.world.ctx.fill();
         this.world.ctx.closePath();
-
-        // this.world.ctx.beginPath();
-        // this.world.ctx.arc(this.ahead.x, this.ahead.y, 2, 0, 2 * Math.PI);
-        // this.world.ctx.arc(this.ahead2.x, this.ahead2.y, 2, 0, 2 * Math.PI);
-        // this.world.ctx.stroke();
-        // this.world.ctx.fill();
-        // this.world.ctx.closePath();
     }
 }

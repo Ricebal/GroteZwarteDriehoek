@@ -30,7 +30,7 @@ export class World {
         // this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
         this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
         this.gameObjects.push(new SmallBlueCircle(600, 600, this));
-        for (let i = 0; i < 0; i++) {
+        for (let i = 0; i < 10; i++) {
             this.gameObjects.push(new Planet(this));
         }
 
