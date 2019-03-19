@@ -10,40 +10,44 @@ export class ObstacleAvoidBehaviour extends Behaviour {
     constructor(owner: MovingGameEntity) {
         super(owner);
     }
-    private distance(a: Vector, b: Vector): Number {
-        return Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+    private lineIntersectsCircle(ahead: Vector, ahead2: Vector, obstacle: Planet): boolean {
+        return Vector.distance(obstacle.position, ahead) <= (obstacle.size * 1.05) || Vector.distance(obstacle.position, ahead2) <= (obstacle.size * 1.05);
     }
 
-    private lineIntersectsCircle(ahead: Vector, ahead2: Vector, obstacle: Planet): Boolean {
-        return this.distance(obstacle.position, ahead) <= (obstacle.size * 1.05) || this.distance(obstacle.position, ahead2) <= (obstacle.size * 1.05);
-    }
     public apply(): Vector {
-        this.ahead = new Vector(this.owner.position.x + (this.owner.velocity.normalize()).x * 100, this.owner.position.y + (this.owner.velocity.normalize()).y * 100);
-        this.ahead2 = new Vector(this.owner.position.x + (this.owner.velocity.normalize()).x * 50, this.owner.position.y + (this.owner.velocity.normalize()).y * 50);
-        var mostThreatening: Planet = this.findMostThreateningObstacle();
-        var avoidance: Vector = new Vector(0, 0);
+        let dynamicLength: number = Vector.distance(new Vector(), this.owner.velocity) / this.owner.maxSpeed;
+        dynamicLength *= 25;
+        // this.ahead = new Vector(this.owner.position.x + (this.owner.velocity.clone().normalize()).x * 100, this.owner.position.y + (this.owner.velocity.clone().normalize()).y * 100);
+        this.ahead = this.owner.velocity.clone().normalize().mult(dynamicLength).add(this.owner.position);
+        // this.ahead2 = new Vector(this.owner.position.x + (this.owner.velocity.clone().normalize()).x * 50, this.owner.position.y + (this.owner.velocity.clone().normalize()).y * 50);
+        this.ahead2 = this.owner.velocity.clone().normalize().mult(dynamicLength / 2).add(this.owner.position);
+        let mostThreatening: Planet = this.findMostThreateningObstacle();
+        let avoidance: Vector = new Vector(0, 0);
         if (mostThreatening != null) {
-            avoidance.x = this.ahead.x - mostThreatening.position.x;
-            avoidance.y = this.ahead.y - mostThreatening.position.y;
-
+            // avoidance.x = this.ahead.x - mostThreatening.position.x;
+            // avoidance.y = this.ahead.y - mostThreatening.position.y;
+            avoidance = Vector.sub(this.ahead, mostThreatening.position);
+            console.log('wow eng');
             avoidance.normalize();
-            avoidance.mult(this.owner.maxAvoidForce);
+            avoidance.limit(this.owner.maxAvoidForce);
+            avoidance.mult(this.owner.maxSpeed);
         } else {
             avoidance.mult(0); // nullify the avoidance force
         }
+
         return avoidance;
     }
 
     private findMostThreateningObstacle(): Planet {
-        var mostThreatening: Planet = null;
+        let mostThreatening: Planet = null;
 
-        for (var i: number = 0; i < this.owner.world.gameObjects.length; i++) {
+        for (let i: number = 0; i < this.owner.world.gameObjects.length; i++) {
             if (this.owner.world.gameObjects[i] instanceof Planet) {
-                var obstacle: Planet = <Planet>this.owner.world.gameObjects[i];
-                var collision: Boolean = this.lineIntersectsCircle(this.ahead, this.ahead2, obstacle);
+                let obstacle: Planet = <Planet>this.owner.world.gameObjects[i];
+                let collision: Boolean = this.lineIntersectsCircle(this.ahead, this.ahead2, obstacle);
 
                 //this.position is bigblacktriangles position
-                if (collision && (mostThreatening == null || this.distance(this.owner.position, obstacle.position) < this.distance(this.owner.position, mostThreatening.position))) {
+                if (collision && (mostThreatening == null || Vector.distance(this.owner.position, obstacle.position) < Vector.distance(this.owner.position, mostThreatening.position))) {
                     mostThreatening = obstacle;
                 }
             }

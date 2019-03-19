@@ -10,11 +10,18 @@ import { SmallBlackTriangle } from "../entities/SmallBlackTriangle";
 
 export class GoalReturn extends CompositeGoal {
 
+    private _hasBehaviour: boolean = false;
+
     constructor(owner: MovingGameEntity) {
         super(owner);
     }
 
     public apply() {
-        this.owner.behaviours.push(new FollowBehaviour(this.owner, <MovingGameEntity>this.owner.world.gameObjects[0], (<SmallBlackTriangle>this.owner).group));
+        if (!this._hasBehaviour) {
+            console.log('added FollowBehaviour');
+            this.owner.behaviours = [new FollowBehaviour(this.owner, <MovingGameEntity>this.owner.world.gameObjects[0], (<SmallBlackTriangle>this.owner).group)];
+            this._hasBehaviour = true;
+        }
     }
+
 }

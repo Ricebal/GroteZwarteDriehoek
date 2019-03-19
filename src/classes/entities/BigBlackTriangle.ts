@@ -17,26 +17,23 @@ export class BigBlackTriangle extends MovingGameEntity {
     public ahead: Vector;
     public ahead2: Vector;
     public lineOfSightPoint: Vector;
+    public avoid: ObstacleAvoidBehaviour;
 
 
     constructor(x: number, y: number, world: World) {
         super(x, y, world);
-        this.acceleration = new Vector();
-        this.velocity = new Vector();
         this.maxSpeed = 1.5;
         this.minSpeed = 0.3;
         this.maxForce = 0.025;
         this.size = 10;
-        this.behaviours = [new ObstacleAvoidBehaviour(this)];
-
+        this.behaviours = [];
+        this.avoid = new ObstacleAvoidBehaviour(this);
     }
 
-    private distance(a: Vector, b: Vector): Number {
-        return Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
-    }
     private lineIntersectsCircle(ahead: Vector, ahead2: Vector, obstacle: Planet): Boolean {
-        return this.distance(obstacle.position, ahead) <= (obstacle.size) || this.distance(obstacle.position, ahead2) <= (obstacle.size);
+        return Vector.distance(obstacle.position, ahead) <= (obstacle.size) || Vector.distance(obstacle.position, ahead2) <= (obstacle.size);
     }
+
     private applyForce(): void {
         if (!this.pathTarget && Config.mousePos)
             this.pathTarget = Config.mousePos;
@@ -46,23 +43,25 @@ export class BigBlackTriangle extends MovingGameEntity {
             this.behaviours = [new PathfindingBehaviour(this, this.pathTarget)];
         }
 
-
-
-
         this.behaviours.forEach(e => {
             this.acceleration.add(e.apply());
         });
 
+        if (!this.behaviours.some((v, i, a) => { return v instanceof PathfindingBehaviour }))
+            this.acceleration.add(this.avoid.apply());
+
+        this.acceleration.limit(this.maxForce);
+
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.maxSpeed);
-        this.velocity.limitMin(this.minSpeed);
+        // this.velocity.limitMin(this.minSpeed);
         this.position.add(this.velocity);
-
+        this.acceleration.mult(0);
     }
 
 
     public update(): void {
-        let normVelocity = this.velocity.normalize();
+        let normVelocity = this.velocity.clone().normalize();
         let dynamic_length = normVelocity.mag();
         this.ahead2 = new Vector(this.position.x + (this.velocity.x * 50), this.position.y + (this.velocity.y * 50));
         this.ahead = new Vector(this.position.x + (this.velocity.x * 100), this.position.y + (this.velocity.y * 100));

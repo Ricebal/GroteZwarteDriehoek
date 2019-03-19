@@ -49,6 +49,10 @@ export class Vector {
         return Math.pow(v2.x - v1.x, 2) + Math.pow(v2.y - v1.y, 2);
     }
 
+    public static distance(v1: Vector, v2: Vector): number {
+        return Math.sqrt(this.distanceSq(v1, v2));
+    }
+
     public clone(): Vector {
         return new Vector(this.x, this.y);
     }

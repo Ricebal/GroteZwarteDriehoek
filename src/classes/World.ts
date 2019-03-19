@@ -39,17 +39,20 @@ export class World {
             this.gameObjects.push(new Planet(this));
         }
 
+
+
+
+        this.navGraph = new NavGraph(30, this);
+
         this.gameObjects.forEach(e => {
             if (e instanceof SmallBlackTriangle) {
                 this.gameObjects.forEach(x => {
                     if (x instanceof SmallBlackTriangle)
                         e.group.push(x);
                 });
+                e.goal = new GoalSeek(e, <MovingGameEntity>this.gameObjects[0]);
             }
-        });
-
-
-        this.navGraph = new NavGraph(30, this);
+        })
     }
 
     public render(): void {

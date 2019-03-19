@@ -1,5 +1,3 @@
-import { Vector } from "../Vector";
-import { World } from "../World";
 import { Goal } from "./Goal";
 import { MovingGameEntity } from "../entities/MovingGameEntity";
 

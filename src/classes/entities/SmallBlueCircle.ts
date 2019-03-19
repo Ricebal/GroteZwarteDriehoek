@@ -11,7 +11,7 @@ import { Goal } from "../goals/Goal";
 
 
 export class SmallBlueCircle extends MovingGameEntity {
-
+    private avoid: ObstacleAvoidBehaviour;
 
     constructor(x: number, y: number, world: World) {
         super(x, y, world);
@@ -19,12 +19,13 @@ export class SmallBlueCircle extends MovingGameEntity {
         this.maxForce = 0.5;
         this.behaviours = [];
         this.behaviours.push(new WanderBehaviour(this));
+        this.avoid = new ObstacleAvoidBehaviour(this);
     }
 
     private applyForce(): void {
 
         if (this.world.gameObjects[1].position && Vector.distanceSq(this.world.gameObjects[0].position, this.position) < Math.pow(Config.panicDistance, 2)) {
-            this.behaviours = [new FleeBehaviour(this, this.world.gameObjects[0].position)];
+            // this.behaviours = [new FleeBehaviour(this, this.world.gameObjects[0].position)];
         } else {
             this.behaviours = [new WanderBehaviour(this)];
         }
@@ -39,6 +40,8 @@ export class SmallBlueCircle extends MovingGameEntity {
             this.acceleration.add(this.behaviours[key].apply());
         }
 
+        this.acceleration.add(this.avoid.apply());
+
 
         if (this.position.x < 0 || this.position.x > 900) {
             this.velocity.x *= -1;
@@ -47,6 +50,8 @@ export class SmallBlueCircle extends MovingGameEntity {
         if (this.position.y < 0 || this.position.y > 900) {
             this.velocity.y *= -1;
         }
+
+        this.acceleration.limit(this.maxForce);
 
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.maxSpeed);

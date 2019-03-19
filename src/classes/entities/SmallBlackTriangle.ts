@@ -1,18 +1,18 @@
 import { World } from '../World';
 import { Vector } from '../Vector';
 import { MovingGameEntity } from './MovingGameEntity';
-import { PathfindingBehaviour } from '../behaviours/PathfindingBehaviour';
-import { Config } from '../Config';
-import { FollowBehaviour } from '../behaviours/FollowBehaviour';
-import { BigBlackTriangle } from './BigBlackTriangle';
 import { Goal } from '../goals/Goal';
 import { GoalSeek } from '../goals/GoalSeek';
+import { ObstacleAvoidBehaviour } from '../behaviours/ObstacleAvoidBehaviour';
+import { PathfindingBehaviour } from '../behaviours/PathfindingBehaviour';
 
 export class SmallBlackTriangle extends MovingGameEntity {
     public size: number;
     public pathTarget: Vector;
     public group: Array<SmallBlackTriangle>;
-    goal: Goal;
+    public goal: Goal;
+    public avoid: ObstacleAvoidBehaviour;
+
     constructor(x: number, y: number, world: World) {
         super(x, y, world);
         this.acceleration = new Vector();
@@ -22,25 +22,27 @@ export class SmallBlackTriangle extends MovingGameEntity {
         this.size = 5;
         this.behaviours = [];
         this.group = [];
-        console.log("im created");
-        this.goal = new GoalSeek(this, <MovingGameEntity>this.world.gameObjects[0]);
+        this.avoid = new ObstacleAvoidBehaviour(this);
+        console.log("Small triangle created");
     }
 
     private applyForce(): void {
-        if (!this.goal.isActive) {
+        if (this.world.navGraph && this.goal.isInactive) {
             this.goal.start();
         }
-        if (this.goal.isFinished) {
 
+        if (this.goal.isActive) {
+            this.goal.apply();
         }
-        // if (this.world.gameObjects[1] && this.behaviours.length === 0 && this.group.length !== 0) {
-        //     this.behaviours.push(new FollowBehaviour(this, <BigBlackTriangle>this.world.gameObjects[0], this.group));
-        // }
 
         this.behaviours.forEach(e => {
             this.acceleration.add(e.apply());
         });
 
+        if (!this.behaviours.some((v, i, a) => { return v instanceof PathfindingBehaviour }))
+            this.acceleration.add(this.avoid.apply());
+
+        this.acceleration.limit(this.maxForce);
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.maxSpeed);
         this.position.add(this.velocity);

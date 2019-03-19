@@ -5,22 +5,33 @@ import { MovingGameEntity } from "../entities/MovingGameEntity";
 export abstract class Goal {
 
     public owner: MovingGameEntity;
-    subgoal: Goal;
-    isActive: Boolean;
+    public subGoal: Goal;
+    public status: string = 'inactive';
 
     constructor(owner: MovingGameEntity) {
         this.owner = owner;
     }
 
     public addSubGoal(goal: Goal) {
-        this.subgoal = goal;
+        this.subGoal = goal;
     }
+
     public apply() {
 
     }
-    public isFinished(): Boolean {
-        return
+
+    get isActive(): boolean {
+        return this.status === 'active';
     }
+
+    get isInactive(): boolean {
+        return this.status === 'inactive';
+    }
+
+    get isFinished(): boolean {
+        return this.status === 'completed';
+    }
+
     public start() {
 
     }
