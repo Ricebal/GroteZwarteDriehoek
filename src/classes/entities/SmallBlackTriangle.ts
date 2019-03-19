@@ -5,12 +5,14 @@ import { PathfindingBehaviour } from '../behaviours/PathfindingBehaviour';
 import { Config } from '../Config';
 import { FollowBehaviour } from '../behaviours/FollowBehaviour';
 import { BigBlackTriangle } from './BigBlackTriangle';
+import { Goal } from '../goals/Goal';
+import { GoalSeek } from '../goals/GoalSeek';
 
 export class SmallBlackTriangle extends MovingGameEntity {
     public size: number;
     public pathTarget: Vector;
     public group: Array<SmallBlackTriangle>;
-
+    goal: Goal;
     constructor(x: number, y: number, world: World) {
         super(x, y, world);
         this.acceleration = new Vector();
@@ -20,12 +22,20 @@ export class SmallBlackTriangle extends MovingGameEntity {
         this.size = 5;
         this.behaviours = [];
         this.group = [];
+        console.log("im created");
+        this.goal = new GoalSeek(this, <MovingGameEntity>this.world.gameObjects[0]);
     }
 
     private applyForce(): void {
-        if (this.world.gameObjects[1] && this.behaviours.length === 0 && this.group.length !== 0) {
-            this.behaviours.push(new FollowBehaviour(this, <BigBlackTriangle>this.world.gameObjects[0], this.group));
+        if (!this.goal.isActive) {
+            this.goal.start();
         }
+        if (this.goal.isFinished) {
+
+        }
+        // if (this.world.gameObjects[1] && this.behaviours.length === 0 && this.group.length !== 0) {
+        //     this.behaviours.push(new FollowBehaviour(this, <BigBlackTriangle>this.world.gameObjects[0], this.group));
+        // }
 
         this.behaviours.forEach(e => {
             this.acceleration.add(e.apply());

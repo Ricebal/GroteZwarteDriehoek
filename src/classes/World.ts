@@ -7,6 +7,9 @@ import { Config } from "./Config";
 import { NavGraph } from "./graph/NavGraph";
 import { SmallBlackTriangle } from "./entities/SmallBlackTriangle";
 import { MovingGameEntity } from "./entities/MovingGameEntity";
+import { ObstacleAvoidBehaviour } from "./behaviours/ObstacleAvoidBehaviour";
+import { SeekBehaviour } from "./behaviours/SeekBehaviour";
+import { GoalSeek } from "./goals/GoalSeek";
 
 export class World {
     private _canvas: HTMLCanvasElement;
@@ -22,14 +25,16 @@ export class World {
         this.ctx = this._canvas.getContext("2d");
         this.gameObjects = [];
         this.gameObjects.push(new BigBlackTriangle(200, 200, this));
-        this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
-        this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
-        this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
-        // this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
-        // this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
-        // this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
-        this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
         this.gameObjects.push(new SmallBlueCircle(600, 600, this));
+        (<BigBlackTriangle>this.gameObjects[0]).behaviours.push(new SeekBehaviour((<BigBlackTriangle>this.gameObjects[0]), (<BigBlackTriangle>this.gameObjects[1]).position))
+        this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
+        this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
+        this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
+        // this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
+        // this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
+        // this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
+        this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
+
         for (let i = 0; i < 10; i++) {
             this.gameObjects.push(new Planet(this));
         }

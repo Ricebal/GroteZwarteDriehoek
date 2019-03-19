@@ -7,6 +7,8 @@ import { FollowBehaviour } from '../behaviours/FollowBehaviour';
 import { SmallBlackTriangle } from './SmallBlackTriangle';
 import { Planet } from './Planet';
 import { ObstacleAvoidBehaviour } from '../behaviours/ObstacleAvoidBehaviour';
+import { SeekBehaviour } from '../behaviours/SeekBehaviour';
+import { SmallBlueCircle } from './SmallBlueCircle';
 
 export class BigBlackTriangle extends MovingGameEntity {
     public size: number;
@@ -25,7 +27,8 @@ export class BigBlackTriangle extends MovingGameEntity {
         this.minSpeed = 0.3;
         this.maxForce = 0.025;
         this.size = 10;
-        this.behaviours = [];
+        this.behaviours = [new ObstacleAvoidBehaviour(this)];
+
     }
 
     private distance(a: Vector, b: Vector): Number {
@@ -42,7 +45,7 @@ export class BigBlackTriangle extends MovingGameEntity {
             this.pathTarget = Config.mousePos.clone();
             this.behaviours = [new PathfindingBehaviour(this, this.pathTarget)];
         }
-        this.behaviours.push(new ObstacleAvoidBehaviour(this))
+
 
 
 
@@ -71,7 +74,7 @@ export class BigBlackTriangle extends MovingGameEntity {
     private draw(): void {
         this.world.ctx.fillStyle = 'rgb(0, 0, 0)';
         this.world.ctx.beginPath();
-        console.log(this.position.x, this.position.y);
+
         this.world.ctx.moveTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 1.5) * this.size, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 1.5) * this.size);
         this.world.ctx.lineTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x)) * this.size * 4, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x)) * this.size * 4);
         this.world.ctx.lineTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size);

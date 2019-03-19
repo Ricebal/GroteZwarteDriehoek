@@ -6,20 +6,25 @@ import { FleeBehaviour } from "../behaviours/FleeBehaviour";
 import { Vector } from "../Vector";
 import { WanderBehaviour } from "../behaviours/WanderBehaviour";
 import { ObstacleAvoidBehaviour } from "../behaviours/ObstacleAvoidBehaviour";
+import { GoalSeek } from "../goals/GoalSeek";
+import { Goal } from "../goals/Goal";
+
 
 export class SmallBlueCircle extends MovingGameEntity {
+
 
     constructor(x: number, y: number, world: World) {
         super(x, y, world);
         this.maxSpeed = 2;
         this.maxForce = 0.5;
         this.behaviours = [];
-        // this.behaviours.push(new WanderBehaviour(this));
+        this.behaviours.push(new WanderBehaviour(this));
     }
 
     private applyForce(): void {
-        if (this.world.gameObjects[1].position && Vector.distanceSq(this.world.gameObjects[1].position, this.position) < Math.pow(Config.panicDistance, 2)) {
-            this.behaviours = [new FleeBehaviour(this, this.world.gameObjects[1].position)];
+
+        if (this.world.gameObjects[1].position && Vector.distanceSq(this.world.gameObjects[0].position, this.position) < Math.pow(Config.panicDistance, 2)) {
+            this.behaviours = [new FleeBehaviour(this, this.world.gameObjects[0].position)];
         } else {
             this.behaviours = [new WanderBehaviour(this)];
         }
