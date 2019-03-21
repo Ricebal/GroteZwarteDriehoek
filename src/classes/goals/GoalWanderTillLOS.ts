@@ -1,4 +1,3 @@
-
 import { MovingGameEntity } from "../entities/MovingGameEntity";
 import { Vector } from "../Vector";
 import { Config } from "../Config";
@@ -6,16 +5,17 @@ import { CompositeGoal } from "./CompositeGoal";
 import { Goal } from "./Goal";
 import { GoalNavToRandom } from "./GoalNavToRandom";
 import { GoalReturn } from "./GoalReturn";
+import { GoalWanderFind } from "./GoalWanderFind";
 
-export class GoalSeek extends CompositeGoal {
+export class GoalWanderTillLOS extends CompositeGoal {
     public target: MovingGameEntity;
     public status: string = 'inactive';
-    public label: string = 'Seek'
+    public label: string = 'WanderToFind'
 
     constructor(owner: MovingGameEntity, target: MovingGameEntity) {
         super(owner);
         this.target = target;
-        this.addSubGoal(new GoalNavToRandom(owner));
+        this.addSubGoal(new GoalWanderFind(owner));
         this.addSubGoal(new GoalReturn(owner));
     }
 

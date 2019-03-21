@@ -11,6 +11,7 @@ import { SmallBlackTriangle } from "../entities/SmallBlackTriangle";
 export class GoalReturn extends CompositeGoal {
 
     private _hasBehaviour: boolean = false;
+    public label: string = "Return";
 
     constructor(owner: MovingGameEntity) {
         super(owner);

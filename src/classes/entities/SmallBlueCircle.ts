@@ -84,7 +84,7 @@ export class SmallBlueCircle extends MovingGameEntity {
 
 
         for (let i = 0; i < this.world.gameObjects.length; i++) {
-            if (this.world.gameObjects[i] instanceof Planet) {
+            if (this.world.gameObjects[i] instanceof Planet && !(<Planet>this.world.gameObjects[i]).isDestroyed) {
                 var target = <Planet>this.world.gameObjects[i];
                 ctx.strokeStyle = 'rgb(0, 0, 255)';
                 ctx.beginPath();

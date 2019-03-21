@@ -27,7 +27,6 @@ export class ObstacleAvoidBehaviour extends Behaviour {
             // avoidance.x = this.ahead.x - mostThreatening.position.x;
             // avoidance.y = this.ahead.y - mostThreatening.position.y;
             avoidance = Vector.sub(this.ahead, mostThreatening.position);
-            console.log('wow eng');
             avoidance.normalize();
             avoidance.limit(this.owner.maxAvoidForce);
             avoidance.mult(this.owner.maxSpeed);

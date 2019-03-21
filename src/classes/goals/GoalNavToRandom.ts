@@ -8,6 +8,7 @@ export class GoalNavToRandom extends CompositeGoal {
 
     public randomGoal: Vector;
     private _hasBehaviour = false;
+    public label: string = "NavToRdnNode";
 
     constructor(owner: MovingGameEntity) {
         super(owner);
