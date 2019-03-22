@@ -73,7 +73,7 @@ export class SmallBlackTriangle extends MovingGameEntity {
 
         let s = (cx * ax + cy * ay) / (ax * ax + ay * ay);
         this.d = new Vector(ax * s, ay * s);
-        return this.isBetween(this.position, this.world.gameObjects[1].position, this.d.clone().add(this.position)) && Vector.distanceSq(this.d.clone().add(this.position), target.position) <= Math.pow(target.size, 2);
+        return this.isBetween(this.position, this.world.gameObjects[1].position, this.d.clone().add(this.position)) && Vector.distanceSq(this.d.clone().add(this.position), target.position) <= Math.pow(target.size, 2) && !target.isDestroyed;
     }
 
     public isBetween(a: Vector, b: Vector, c: Vector): boolean {
