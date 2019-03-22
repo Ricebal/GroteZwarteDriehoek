@@ -35,7 +35,7 @@ export class World {
         //this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
         this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
 
-        for (let i = 0; i < 1; i++) {
+        for (let i = 0; i < 40; i++) {
             let s = new Planet(this);
             let isok = true;
             for (let j = 5; j < this.gameObjects.length; j++) {

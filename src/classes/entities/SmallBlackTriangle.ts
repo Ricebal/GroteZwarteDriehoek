@@ -17,6 +17,8 @@ export class SmallBlackTriangle extends MovingGameEntity {
     public goal: Goal;
     public avoid: ObstacleAvoidBehaviour;
     public d: Vector;
+    public intersects: boolean;
+
     constructor(x: number, y: number, world: World) {
         super(x, y, world);
         this.acceleration = new Vector();
@@ -27,6 +29,7 @@ export class SmallBlackTriangle extends MovingGameEntity {
         this.behaviours = [];
         this.group = [];
         this.avoid = new ObstacleAvoidBehaviour(this);
+        this.intersects = false;
         console.log("Small triangle created");
     }
 
@@ -61,7 +64,7 @@ export class SmallBlackTriangle extends MovingGameEntity {
         this.draw();
     }
 
-    public inCircle(lineStart: Vector, lineEnd: Vector, target: StaticGameEntity): boolean {
+    public inCircle(lineStart: Vector, lineEnd: Vector, target: Planet): boolean {
         let ax = lineEnd.x - lineStart.x;
         let ay = lineEnd.y - lineStart.y;
         let cx = target.position.x - lineStart.x;
@@ -70,11 +73,11 @@ export class SmallBlackTriangle extends MovingGameEntity {
 
         let s = (cx * ax + cy * ay) / (ax * ax + ay * ay);
         this.d = new Vector(ax * s, ay * s);
-        if (Vector.distanceSq(this.d, cv) < Math.sqrt((<Planet>target).size)) {
-            return true;
-        }
-        return false;
+        return this.isBetween(this.position, this.world.gameObjects[1].position, this.d.clone().add(this.position)) && Vector.distanceSq(this.d.clone().add(this.position), target.position) <= Math.pow(target.size, 2);
+    }
 
+    public isBetween(a: Vector, b: Vector, c: Vector): boolean {
+        return Vector.distance(a, c) + Vector.distance(c, b) === Vector.distance(a, b);
     }
 
     private draw(): void {
@@ -97,12 +100,24 @@ export class SmallBlackTriangle extends MovingGameEntity {
                 posy += 10;
             })
         }
+
+
+
         let context = this;
         let inLOS: boolean = true;
         this.world.gameObjects.forEach(function (element) {
             if (element instanceof Planet) {
                 if (context.inCircle(owner.position, owner.world.gameObjects[1].position, element)) {
                     inLOS = false;
+                }
+
+                if (context.isBetween(context.position, context.world.gameObjects[1].position, context.d.clone().add(context.position))) {
+                    ctx.strokeStyle = 'rgb(255, 0, 0)';
+                    ctx.beginPath();
+                    ctx.moveTo(element.position.x, element.position.y);
+                    ctx.lineTo(context.d.x + context.position.x, context.d.y + context.position.y);
+                    ctx.stroke();
+                    ctx.closePath();
                 }
             }
         })
@@ -123,9 +138,11 @@ export class SmallBlackTriangle extends MovingGameEntity {
         ctx.lineTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size);
         ctx.fill();
         ctx.closePath();
-        ctx.beginPath();
-        ctx.arc(this.d.x + this.position.x, this.d.y + this.position.y, 2, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.closePath();
+        if (context.isBetween(context.position, context.world.gameObjects[1].position, context.d.clone().add(context.position))) {
+            ctx.beginPath();
+            ctx.arc(this.d.x + this.position.x, this.d.y + this.position.y, 2, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.closePath();
+        }
     }
 }
