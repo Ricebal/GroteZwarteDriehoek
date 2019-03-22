@@ -31,15 +31,20 @@ export class GoalWanderFind extends CompositeGoal {
     // }
 
     public inCircle(lineStart: Vector, lineEnd: Vector, target: StaticGameEntity): boolean {
-        let x1 = lineStart.x - target.position.x;
-        let x2 = lineEnd.x - target.position.x;
-        let y1 = lineStart.y - target.position.y;
-        let y2 = lineEnd.y - target.position.y;
-        let dx = x2 - x1;
-        let dy = y2 - y1;
-        let dr_sq = Math.sqrt(dx) + Math.sqrt(dy);
-        let D = x1 * y2 - x2 * y1;
-        return Math.sqrt((<Planet>target).size) * dr_sq > Math.sqrt(D);
+        let ax = lineStart.x - target.position.x;
+        let ay = lineEnd.x - target.position.x;
+        let bx = lineStart.y - target.position.y;
+        let by = lineEnd.y - target.position.y;
+        let a = Math.sqrt(ax) + Math.sqrt(ay) - Math.sqrt((<Planet>target).size);
+        let b = 2 * (ax * (bx - ax) + ay * (by - ay));
+        let c = Math.sqrt(bx - ax) + Math.sqrt(by - ay);
+        let disc = Math.sqrt(b) - 4 * a * c;
+        if (disc <= 0) return false;
+        let sqrtdisc = Math.sqrt(disc);
+        let t1 = (-b + sqrtdisc) / (2 * a);
+        let t2 = (-b - sqrtdisc) / (2 * a);
+        if ((0 < t1 && t1 < 1) || (0 < t2 && t2 < 1)) return true;
+        return false;
     }
 
     public apply() {

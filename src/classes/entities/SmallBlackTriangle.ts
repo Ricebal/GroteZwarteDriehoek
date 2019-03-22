@@ -16,7 +16,7 @@ export class SmallBlackTriangle extends MovingGameEntity {
     public group: Array<SmallBlackTriangle>;
     public goal: Goal;
     public avoid: ObstacleAvoidBehaviour;
-
+    public d: Vector;
     constructor(x: number, y: number, world: World) {
         super(x, y, world);
         this.acceleration = new Vector();
@@ -62,15 +62,19 @@ export class SmallBlackTriangle extends MovingGameEntity {
     }
 
     public inCircle(lineStart: Vector, lineEnd: Vector, target: StaticGameEntity): boolean {
-        let x1 = lineStart.x - target.position.x;
-        let x2 = lineEnd.x - target.position.x;
-        let y1 = lineStart.y - target.position.y;
-        let y2 = lineEnd.y - target.position.y;
-        let dx = x2 - x1;
-        let dy = y2 - y1;
-        let dr_sq = Math.sqrt(dx) + Math.sqrt(dy);
-        let D = x1 * y2 - x2 * y1;
-        return Math.sqrt((<Planet>target).size) * dr_sq > Math.sqrt(D);
+        let ax = lineEnd.x - lineStart.x;
+        let ay = lineEnd.y - lineStart.y;
+        let cx = target.position.x - lineStart.x;
+        let cy = target.position.y - lineStart.y;
+        let cv = new Vector(cx, cy);
+
+        let s = (cx * ax + cy * ay) / (ax * ax + ay * ay);
+        this.d = new Vector(ax * s, ay * s);
+        if (Vector.distanceSq(this.d, cv) < Math.sqrt((<Planet>target).size)) {
+            return true;
+        }
+        return false;
+
     }
 
     private draw(): void {
@@ -97,7 +101,6 @@ export class SmallBlackTriangle extends MovingGameEntity {
         let inLOS: boolean = true;
         this.world.gameObjects.forEach(function (element) {
             if (element instanceof Planet) {
-
                 if (context.inCircle(owner.position, owner.world.gameObjects[1].position, element)) {
                     inLOS = false;
                 }
@@ -118,6 +121,10 @@ export class SmallBlackTriangle extends MovingGameEntity {
         ctx.moveTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 1.5) * this.size, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 1.5) * this.size);
         ctx.lineTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x)) * this.size * 4, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x)) * this.size * 4);
         ctx.lineTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(this.d.x + this.position.x, this.d.y + this.position.y, 2, 0, 2 * Math.PI);
         ctx.fill();
         ctx.closePath();
     }

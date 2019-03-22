@@ -30,12 +30,12 @@ export class World {
         this.gameObjects.push(new BigBlackTriangle(200, 200, this));
         this.gameObjects.push(new SmallBlueCircle(600, 600, this));
         (<BigBlackTriangle>this.gameObjects[0]).behaviours.push(new SeekBehaviour((<BigBlackTriangle>this.gameObjects[0]), (<BigBlackTriangle>this.gameObjects[1]).position))
-        this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
-        this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
-        this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
+        //this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
+        //this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
+        //this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
         this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
 
-        for (let i = 0; i < 40; i++) {
+        for (let i = 0; i < 1; i++) {
             let s = new Planet(this);
             let isok = true;
             for (let j = 5; j < this.gameObjects.length; j++) {
@@ -56,12 +56,12 @@ export class World {
                     if (x instanceof SmallBlackTriangle)
                         e.group.push(x);
                 });
-                e.goal = new GoalWanderTillLOS(e, <MovingGameEntity>this.gameObjects[0]);
-                // if (Math.random() > 0.5) {
-                //     e.goal = new GoalSeek(e, <MovingGameEntity>this.gameObjects[0]);
-                // } else {
-                //     e.goal = new GoalDestroyTerrain(e, <StaticGameEntity>this.gameObjects[Math.floor(Math.random() * (this.gameObjects.length - 6)) + 6]);
-                // }
+                //                e.goal = new GoalWanderTillLOS(e, <MovingGameEntity>this.gameObjects[0]);
+                if (Math.random() > 0.5) {
+                    e.goal = new GoalSeek(e, <MovingGameEntity>this.gameObjects[0]);
+                } else {
+                    e.goal = new GoalDestroyTerrain(e, <StaticGameEntity>this.gameObjects[Math.floor(Math.random() * (this.gameObjects.length - 6)) + 6]);
+                }
             }
         })
     }
