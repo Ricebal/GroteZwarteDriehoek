@@ -1,13 +1,21 @@
-export class FuzzySet {
+import { FuzzyTerm } from "./FuzzyTerm";
+
+export class FuzzySet extends FuzzyTerm {
     public dom: number;
     public representativeValue: number;
 
     constructor(repVal: number) {
+        super();
         this.representativeValue = repVal;
         this.dom = 0;
     }
 
+    public clone(): FuzzySet {
+        return new FuzzySet(this.representativeValue);
+    }
+
     public calculateDOM(val: number): number {
+        console.log('This shouldn\'t happen');
         return; // TODO: Implement this function
     }
 

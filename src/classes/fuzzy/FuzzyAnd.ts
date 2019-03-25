@@ -2,14 +2,25 @@ import { FuzzyTerm } from "./FuzzyTerm";
 
 export class FuzzyAnd extends FuzzyTerm {
     private _terms: Array<FuzzyTerm>;
-    constructor(t1: FuzzyTerm, t2: FuzzyTerm, t3: FuzzyTerm = null, t4: FuzzyTerm = null) {
+    constructor(t1: FuzzyTerm, t2: FuzzyTerm = null, t3: FuzzyTerm = null, t4: FuzzyTerm = null) {
         super();
-        this._terms = [t1.clone(), t2.clone()];
+        this._terms = [t1];
+        if (t2)
+            this._terms.push(t2);
         if (t3)
             this._terms.push(t3);
 
         if (t4)
             this._terms.push(t4);
+    }
+
+    public clone(): FuzzyAnd {
+        switch (this._terms.length) {
+            case 1: return new FuzzyAnd(this._terms[0]);
+            case 2: return new FuzzyAnd(this._terms[0], this._terms[1]);
+            case 3: return new FuzzyAnd(this._terms[0], this._terms[1], this._terms[2]);
+            case 4: return new FuzzyAnd(this._terms[0], this._terms[1], this._terms[2], this._terms[3]);
+        }
     }
 
     public getDOM(): number {

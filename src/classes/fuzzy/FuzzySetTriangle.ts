@@ -12,6 +12,10 @@ export class FuzzySetTriangle extends FuzzySet {
         this._rightOffset = right;
     }
 
+    public clone(): FuzzySetTriangle {
+        return new FuzzySetTriangle(this._peakPoint, this._leftOffset, this._rightOffset);
+    }
+
     // Calculate degree of membership for a particular value
     public calculateDOM(val: number): number {
         // Catch divide by zero errors

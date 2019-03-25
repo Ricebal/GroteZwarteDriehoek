@@ -1,5 +1,7 @@
 import { FuzzySet } from "./FuzzySet";
 import { FuzzySetTriangle } from "./FuzzySetTriangle";
+import { FuzzySetLeftShoulder } from "./FuzzySetLeftShoulder";
+import { FuzzySetRightShoulder } from "./FuzzySetRightShoulder";
 
 export class FuzzyVariable {
     private _memberSets: Map<string, FuzzySet>;
@@ -9,6 +11,7 @@ export class FuzzyVariable {
     constructor() {
         this._minRange = 0.0;
         this._maxRange = 0.0;
+        this._memberSets = new Map<string, FuzzySet>();
     }
 
     public adjustRangeToFit(minBound: number, maxBound: number) {
@@ -25,10 +28,24 @@ export class FuzzyVariable {
         return this._memberSets.get(name);
     }
 
+    public addLeftShoulderSet(name: string, minBound: number, peak: number, maxBound: number): FuzzySet {
+        this._memberSets.set(name, new FuzzySetLeftShoulder(peak, peak - minBound, maxBound - peak));
+        this.adjustRangeToFit(minBound, maxBound);
+        return this._memberSets.get(name);
+    }
+
+    public addRightShoulderSet(name: string, minBound: number, peak: number, maxBound: number): FuzzySet {
+        this._memberSets.set(name, new FuzzySetRightShoulder(peak, peak - minBound, maxBound - peak));
+        this.adjustRangeToFit(minBound, maxBound);
+        return this._memberSets.get(name);
+    }
+
     public fuzzify(val: number): void {
-        this._memberSets.forEach(e => {
-            e.setDOM(e.calculateDOM(val));
-        });
+        if ((val >= this._minRange) && (val <= this._maxRange)) {
+            this._memberSets.forEach(e => {
+                e.setDOM(e.calculateDOM(val));
+            });
+        }
     }
 
     public deFuzzifyMaxAv(): number {
@@ -39,6 +56,9 @@ export class FuzzyVariable {
             bottom += e.getDOM();
             top += e.getRepresentativeVal() * e.getDOM();
         });
+
+        console.log(`Bottom: ${bottom}`);
+        console.log(`Top: ${top}`);
 
         if (bottom === 0)
             return 0.0;

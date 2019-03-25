@@ -14,6 +14,6 @@ export class FuzzyTerm {
     }
 
     public orWithDOM(val: number): void {
-
+        console.log('This shouldn\'t happen');
     }
 }

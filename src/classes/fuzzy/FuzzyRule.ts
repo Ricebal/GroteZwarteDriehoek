@@ -5,8 +5,8 @@ export class FuzzyRule {
     private _consequent: FuzzyTerm;
 
     constructor(ant: FuzzyTerm, con: FuzzyTerm) {
-        this._antecedent = ant.clone();
-        this._consequent = con.clone();
+        this._antecedent = ant;
+        this._consequent = con;
     }
 
     public calculate(): void {
