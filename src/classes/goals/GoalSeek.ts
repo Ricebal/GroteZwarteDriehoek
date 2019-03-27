@@ -1,9 +1,5 @@
-
 import { MovingGameEntity } from "../entities/MovingGameEntity";
-import { Vector } from "../Vector";
-import { Config } from "../Config";
 import { CompositeGoal } from "./CompositeGoal";
-import { Goal } from "./Goal";
 import { GoalNavToRandom } from "./GoalNavToRandom";
 import { GoalReturn } from "./GoalReturn";
 

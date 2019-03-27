@@ -15,41 +15,31 @@ export class GoalWanderFind extends CompositeGoal {
 
     private _hasBehaviour: boolean = false;
     public label: string = "Wander";
+    public LOSGoal: number = 0;
 
     constructor(owner: MovingGameEntity) {
         super(owner);
     }
+    // Checks if line goes trough or touches a circle
+    public isInCircle(lineStart: Vector, lineEnd: Vector, target: Planet): boolean {
+        let ax = lineEnd.x - lineStart.x;
+        let ay = lineEnd.y - lineStart.y;
+        let cx = target.position.x - lineStart.x;
+        let cy = target.position.y - lineStart.y;
+        let cv = new Vector(cx, cy);
 
-    // public inCircle(lineStart: Vector, lineEnd: Vector, target: StaticGameEntity): boolean {
-    //     let x = Vector.distance(lineStart, lineEnd);
-    //     if (((target.position.x - lineStart.x) * (lineEnd.y - lineStart.y) * (target.position.y - lineStart.y) * (lineEnd.x - lineStart.x) / x) <= (<Planet>target).size) {
-    //         return true;
-    //     }
-    //     else {
-    //         return false;
-    //     }
-    // }
+        let s = (cx * ax + cy * ay) / (ax * ax + ay * ay);
+        let d = new Vector(ax * s, ay * s);
+        return this.isBetween(this.owner.position, this.owner.world.gameObjects[1].position, d.clone().add(this.owner.position)) && Vector.distanceSq(d.clone().add(this.owner.position), target.position) <= Math.pow(target.size, 2) && !target.isDestroyed;
+    }
 
-    public inCircle(lineStart: Vector, lineEnd: Vector, target: StaticGameEntity): boolean {
-        let ax = lineStart.x - target.position.x;
-        let ay = lineEnd.x - target.position.x;
-        let bx = lineStart.y - target.position.y;
-        let by = lineEnd.y - target.position.y;
-        let a = Math.sqrt(ax) + Math.sqrt(ay) - Math.sqrt((<Planet>target).size);
-        let b = 2 * (ax * (bx - ax) + ay * (by - ay));
-        let c = Math.sqrt(bx - ax) + Math.sqrt(by - ay);
-        let disc = Math.sqrt(b) - 4 * a * c;
-        if (disc <= 0) return false;
-        let sqrtdisc = Math.sqrt(disc);
-        let t1 = (-b + sqrtdisc) / (2 * a);
-        let t2 = (-b - sqrtdisc) / (2 * a);
-        if ((0 < t1 && t1 < 1) || (0 < t2 && t2 < 1)) return true;
-        return false;
+    public isBetween(a: Vector, b: Vector, c: Vector): boolean {
+        return Vector.distance(a, c) + Vector.distance(c, b) === Vector.distance(a, b);
     }
 
     public apply() {
         if (!this._hasBehaviour) {
-            console.log('added wanderbehav');
+            console.log('added WanderBehaviour');
             this.owner.behaviours = [new WanderBehaviour(this.owner)];
             this._hasBehaviour = true;
         }
@@ -57,20 +47,25 @@ export class GoalWanderFind extends CompositeGoal {
     get isFinished(): boolean {
         let owner = this.owner;
         let context = this;
-        let inLOS: boolean = true;
+        let inLOS: boolean = false;
+        let Planets: number = 0;
+        let PlanetsOutOfLOS: number = 0;
         this.owner.world.gameObjects.forEach(function (element) {
             if (element instanceof Planet) {
-
-                if (context.inCircle(owner.position, owner.world.gameObjects[1].position, element)) {
-                    inLOS = false;
+                Planets++;
+                if (!context.isInCircle(owner.position, owner.world.gameObjects[1].position, element)) {
+                    PlanetsOutOfLOS++;
                 }
             }
-        })
-        if (inLOS) {
+        });
+
+        if (Planets === PlanetsOutOfLOS) {
+            this.LOSGoal++;
+        }
+        if (this.LOSGoal > 20) {
             this.status = 'completed';
         }
-
-        return this.status == 'completed';
+        return this.status === 'completed';
     }
 
 }

@@ -9,6 +9,10 @@ import { Config } from '../Config';
 import { CompositeGoal } from '../goals/CompositeGoal';
 import { StaticGameEntity } from './StaticGameEntity';
 import { Planet } from './Planet';
+import { GoalDestroyTerrain } from '../goals/GoalDestroyTerrain';
+import { FollowBehaviour } from '../behaviours/FollowBehaviour';
+import { BigBlackTriangle } from './BigBlackTriangle';
+import { GoalWanderTillLOS } from '../goals/GoalWanderTillLOS';
 
 export class SmallBlackTriangle extends MovingGameEntity {
     public size: number;
@@ -30,7 +34,6 @@ export class SmallBlackTriangle extends MovingGameEntity {
         this.group = [];
         this.avoid = new ObstacleAvoidBehaviour(this);
         this.intersects = false;
-        console.log("Small triangle created");
     }
 
     private applyForce(): void {
@@ -42,6 +45,24 @@ export class SmallBlackTriangle extends MovingGameEntity {
         if (this.goal.isActive) {
             this.goal.apply();
         }
+        // if (this.goal.isFinished) {
+        //     if (this.behaviours.length > 0) {
+        //         this.behaviours.push(new FollowBehaviour(this, <BigBlackTriangle>this.world.gameObjects[0], this.group));
+        //     }
+        /*
+        //Code for inplementing random behaviors reapplying
+        if (Math.random() > 0.99) {
+            let randomNumber = Math.random();
+            if (randomNumber > 0 && randomNumber < 0.333) {
+                this.goal = new GoalSeek(this, <MovingGameEntity>this.world.gameObjects[0]);
+            } else if (randomNumber < 0.666) {
+                this.goal = new GoalDestroyTerrain(this, <StaticGameEntity>this.world.gameObjects[Math.floor(Math.random() * (this.world.gameObjects.length - 6)) + 6]);
+            } else {
+                this.goal = new GoalWanderTillLOS(this, <MovingGameEntity>this.world.gameObjects[0]);
+            }
+        }
+        */
+        //}
 
         this.behaviours.forEach(e => {
             this.acceleration.add(e.apply());
@@ -138,6 +159,13 @@ export class SmallBlackTriangle extends MovingGameEntity {
         ctx.lineTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size);
         ctx.fill();
         ctx.closePath();
+
+        ctx.beginPath();
+
+        ctx.lineTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size);
+        ctx.fill();
+        ctx.closePath();
+
         if (context.isBetween(context.position, context.world.gameObjects[1].position, context.d.clone().add(context.position))) {
             ctx.beginPath();
             ctx.arc(this.d.x + this.position.x, this.d.y + this.position.y, 2, 0, 2 * Math.PI);

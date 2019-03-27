@@ -11,32 +11,32 @@ export class ObstacleAvoidBehaviour extends Behaviour {
         super(owner);
     }
     private lineIntersectsCircle(ahead: Vector, ahead2: Vector, obstacle: Planet): boolean {
-        return Vector.distance(obstacle.position, ahead) <= (obstacle.size * 1.05) || Vector.distance(obstacle.position, ahead2) <= (obstacle.size * 1.05);
+        return Vector.distance(obstacle.position, ahead) <= (obstacle.size * 1.2) || Vector.distance(obstacle.position, ahead2) <= (obstacle.size * 1.2);
     }
 
     public apply(): Vector {
+        // The ahead vector scales with velocity, the faster it goes the further it looks ahead.
         let dynamicLength: number = Vector.distance(new Vector(), this.owner.velocity) / this.owner.maxSpeed;
         dynamicLength *= 25;
-        // this.ahead = new Vector(this.owner.position.x + (this.owner.velocity.clone().normalize()).x * 100, this.owner.position.y + (this.owner.velocity.clone().normalize()).y * 100);
         this.ahead = this.owner.velocity.clone().normalize().mult(dynamicLength).add(this.owner.position);
-        // this.ahead2 = new Vector(this.owner.position.x + (this.owner.velocity.clone().normalize()).x * 50, this.owner.position.y + (this.owner.velocity.clone().normalize()).y * 50);
-        this.ahead2 = this.owner.velocity.clone().normalize().mult(dynamicLength / 2).add(this.owner.position);
+        this.ahead2 = this.owner.velocity.clone().normalize().mult(dynamicLength).add(this.owner.position);
+
+        // The mostThreatening Planet is the planet closest
         let mostThreatening: Planet = this.findMostThreateningObstacle();
         let avoidance: Vector = new Vector(0, 0);
+
         if (mostThreatening != null) {
-            // avoidance.x = this.ahead.x - mostThreatening.position.x;
-            // avoidance.y = this.ahead.y - mostThreatening.position.y;
             avoidance = Vector.sub(this.ahead, mostThreatening.position);
             avoidance.normalize();
             avoidance.limit(this.owner.maxAvoidForce);
             avoidance.mult(this.owner.maxSpeed);
         } else {
-            avoidance.mult(0); // nullify the avoidance force
+            avoidance.mult(0); // nullify the avoidance force is there's no planet
         }
-
         return avoidance;
     }
 
+    // returns null if there's no intersection
     private findMostThreateningObstacle(): Planet {
         let mostThreatening: Planet = null;
 
@@ -44,8 +44,6 @@ export class ObstacleAvoidBehaviour extends Behaviour {
             if (this.owner.world.gameObjects[i] instanceof Planet) {
                 let obstacle: Planet = <Planet>this.owner.world.gameObjects[i];
                 let collision: Boolean = this.lineIntersectsCircle(this.ahead, this.ahead2, obstacle);
-
-                //this.position is bigblacktriangles position
                 if (collision && (mostThreatening == null || Vector.distance(this.owner.position, obstacle.position) < Vector.distance(this.owner.position, mostThreatening.position))) {
                     mostThreatening = obstacle;
                 }
@@ -53,14 +51,4 @@ export class ObstacleAvoidBehaviour extends Behaviour {
         }
         return mostThreatening;
     }
-    // public apply(): Vector {
-
-    //     let desired: Vector = new Vector(this.ahead.x - this.obstaclePosition.x, this.ahead.y - this.obstaclePosition.y);
-    //     desired.normalize();
-    //     desired.mult(this.owner.maxSpeed);
-
-    //     desired = Vector.sub(desired, this.owner.velocity);
-    //     desired.limit(this.owner.maxForce);
-    //     return desired;
-    // }
 }

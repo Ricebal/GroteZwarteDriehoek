@@ -30,16 +30,16 @@ export class World {
         this.gameObjects.push(new BigBlackTriangle(200, 200, this));
         this.gameObjects.push(new SmallBlueCircle(600, 600, this));
         (<BigBlackTriangle>this.gameObjects[0]).behaviours.push(new SeekBehaviour((<BigBlackTriangle>this.gameObjects[0]), (<BigBlackTriangle>this.gameObjects[1]).position))
-        //this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
-        //this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
-        //this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
+        this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
+        this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
+        this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
         this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
 
         for (let i = 0; i < 40; i++) {
             let s = new Planet(this);
             let isok = true;
             for (let j = 5; j < this.gameObjects.length; j++) {
-                if (Vector.distanceSq(s.position, this.gameObjects[j].position) < (Math.sqrt((<Planet>this.gameObjects[j]).size) + Math.sqrt((s.size))) * 2) {
+                if (Vector.distanceSq(s.position, this.gameObjects[j].position) < (Math.pow((<Planet>this.gameObjects[j]).size, 2) + Math.pow(s.size, 2)) + 5000) {
                     isok = false;
                 }
             }
@@ -56,11 +56,14 @@ export class World {
                     if (x instanceof SmallBlackTriangle)
                         e.group.push(x);
                 });
-                //                e.goal = new GoalWanderTillLOS(e, <MovingGameEntity>this.gameObjects[0]);
-                if (Math.random() > 0.5) {
-                    e.goal = new GoalSeek(e, <MovingGameEntity>this.gameObjects[0]);
+                // Each small black triangle gets a random goal all ending in following Big Black Triangle
+                let randomNumber = Math.random();
+                if (randomNumber > 0 && randomNumber < 0.333) {
+                    e.goal = new GoalSeek(e, <MovingGameEntity>e.world.gameObjects[0]);
+                } else if (randomNumber < 0.666) {
+                    e.goal = new GoalDestroyTerrain(e, <StaticGameEntity>e.world.gameObjects[Math.floor(Math.random() * (e.world.gameObjects.length - 6)) + 6]);
                 } else {
-                    e.goal = new GoalDestroyTerrain(e, <StaticGameEntity>this.gameObjects[Math.floor(Math.random() * (this.gameObjects.length - 6)) + 6]);
+                    e.goal = new GoalWanderTillLOS(e, <MovingGameEntity>e.world.gameObjects[0]);
                 }
             }
         })

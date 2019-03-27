@@ -8,7 +8,7 @@ export class Planet extends StaticGameEntity {
 
     constructor(world: World) {
         super(Math.floor(Math.random() * (+900 - +0)) + +0, Math.floor(Math.random() * (+900 - +0)) + +0, world);
-        this.size = Math.floor(Math.random() * (+60 - +10)) + +10;
+        this.size = Math.floor(Math.random() * (+60 - +10)) + +20;
     }
 
     public update(): void {

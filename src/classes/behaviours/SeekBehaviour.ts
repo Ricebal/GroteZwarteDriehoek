@@ -1,6 +1,7 @@
 import { Vector } from "../Vector";
 import { MovingGameEntity } from "../entities/MovingGameEntity";
 import { Behaviour } from "./Behaviour";
+import { Config } from "../Config";
 
 export class SeekBehaviour extends Behaviour {
     public owner: MovingGameEntity;

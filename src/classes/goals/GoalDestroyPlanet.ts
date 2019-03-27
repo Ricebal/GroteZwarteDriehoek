@@ -28,9 +28,8 @@ export class GoalDestroyPlanet extends CompositeGoal {
             console.log(this.owner.world.gameObjects.length);
             (<Planet>this.target).isDestroyed = true;
             this._hasBehaviour = true;
-            this.hasDestroyedPlanet = true;
             (<SmallBlackTriangle>this.owner).avoid = new ObstacleAvoidBehaviour(this.owner);
-            console.log(this.owner.world.gameObjects.length);
+            this.hasDestroyedPlanet = true;
         }
     }
     get isFinished(): boolean {

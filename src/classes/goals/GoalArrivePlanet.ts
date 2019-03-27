@@ -28,9 +28,10 @@ export class GoalArrivePlanet extends CompositeGoal {
             this.owner.behaviours = [new ArriveBehaviour(this.owner, this.target.position)];
             this._hasBehaviour = true;
         }
+
     }
+    // Checks i
     get isFinished(): boolean {
-        //console.log('arrive' + this.status);
         if (this.status !== 'completed') {
             let distance = Vector.distanceSq(this.owner.position, this.target.position);
             if (distance < (<Planet>this.target).size * 1.10) {

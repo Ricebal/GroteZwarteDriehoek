@@ -23,8 +23,7 @@ export class BigBlackTriangle extends MovingGameEntity {
     constructor(x: number, y: number, world: World) {
         super(x, y, world);
         this.maxSpeed = 1.5;
-        this.minSpeed = 0.3;
-        this.maxForce = 0.025;
+        this.maxForce = 0.5;
         this.size = 10;
         this.behaviours = [];
         this.avoid = new ObstacleAvoidBehaviour(this);
@@ -54,7 +53,6 @@ export class BigBlackTriangle extends MovingGameEntity {
 
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.maxSpeed);
-        // this.velocity.limitMin(this.minSpeed);
         this.position.add(this.velocity);
         this.acceleration.mult(0);
     }
