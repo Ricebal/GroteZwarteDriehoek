@@ -37,7 +37,6 @@ export class SmallBlackTriangle extends MovingGameEntity {
     }
 
     private applyForce(): void {
-
         if (this.world.navGraph && this.goal.isInactive) {
             this.goal.start();
         }
@@ -45,24 +44,6 @@ export class SmallBlackTriangle extends MovingGameEntity {
         if (this.goal.isActive) {
             this.goal.apply();
         }
-        // if (this.goal.isFinished) {
-        //     if (this.behaviours.length > 0) {
-        //         this.behaviours.push(new FollowBehaviour(this, <BigBlackTriangle>this.world.gameObjects[0], this.group));
-        //     }
-        /*
-        //Code for inplementing random behaviors reapplying
-        if (Math.random() > 0.99) {
-            let randomNumber = Math.random();
-            if (randomNumber > 0 && randomNumber < 0.333) {
-                this.goal = new GoalSeek(this, <MovingGameEntity>this.world.gameObjects[0]);
-            } else if (randomNumber < 0.666) {
-                this.goal = new GoalDestroyTerrain(this, <StaticGameEntity>this.world.gameObjects[Math.floor(Math.random() * (this.world.gameObjects.length - 6)) + 6]);
-            } else {
-                this.goal = new GoalWanderTillLOS(this, <MovingGameEntity>this.world.gameObjects[0]);
-            }
-        }
-        */
-        //}
 
         this.behaviours.forEach(e => {
             this.acceleration.add(e.apply());
@@ -75,7 +56,6 @@ export class SmallBlackTriangle extends MovingGameEntity {
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.maxSpeed);
         this.position.add(this.velocity);
-
         this.acceleration.mult(0);
     }
 
