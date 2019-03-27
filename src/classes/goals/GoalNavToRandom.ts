@@ -3,8 +3,9 @@ import { MovingGameEntity } from "../entities/MovingGameEntity";
 import { Vector } from "../Vector";
 import { CompositeGoal } from "./CompositeGoal";
 import { PathfindingBehaviour } from "../behaviours/PathfindingBehaviour";
+import { Goal } from "./Goal";
 
-export class GoalNavToRandom extends CompositeGoal {
+export class GoalNavToRandom extends Goal {
 
     public randomGoal: Vector;
     private _hasBehaviour = false;

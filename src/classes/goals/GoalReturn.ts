@@ -4,8 +4,9 @@ import { Vector } from "../Vector";
 import { CompositeGoal } from "./CompositeGoal";
 import { FollowBehaviour } from "../behaviours/FollowBehaviour";
 import { SmallBlackTriangle } from "../entities/SmallBlackTriangle";
+import { Goal } from "./Goal";
 
-export class GoalReturn extends CompositeGoal {
+export class GoalReturn extends Goal {
 
     private _hasBehaviour: boolean = false;
     public label: string = "Return";

@@ -11,7 +11,7 @@ import { ArriveBehaviour } from "../behaviours/ArriveBehaviour";
 import { StaticGameEntity } from "../entities/StaticGameEntity";
 import { Planet } from "../entities/Planet";
 
-export class GoalArrivePlanet extends CompositeGoal {
+export class GoalArrivePlanet extends Goal {
 
     private _hasBehaviour: boolean = false;
     private target: StaticGameEntity;

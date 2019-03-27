@@ -11,7 +11,7 @@ import { WanderBehaviour } from "../behaviours/WanderBehaviour";
 import { Planet } from "../entities/Planet";
 import { StaticGameEntity } from "../entities/StaticGameEntity";
 
-export class GoalWanderFind extends CompositeGoal {
+export class GoalWanderFind extends Goal {
 
     private _hasBehaviour: boolean = false;
     public label: string = "Wander";

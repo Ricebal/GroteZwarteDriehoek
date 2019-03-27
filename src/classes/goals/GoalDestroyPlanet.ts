@@ -11,7 +11,7 @@ import { StaticGameEntity } from "../entities/StaticGameEntity";
 import { Planet } from "../entities/Planet";
 import { ObstacleAvoidBehaviour } from "../behaviours/ObstacleAvoidBehaviour";
 
-export class GoalDestroyPlanet extends CompositeGoal {
+export class GoalDestroyPlanet extends Goal {
 
     private _hasBehaviour: boolean = false;
     private target: StaticGameEntity;

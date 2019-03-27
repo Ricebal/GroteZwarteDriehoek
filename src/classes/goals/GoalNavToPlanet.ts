@@ -5,8 +5,9 @@ import { CompositeGoal } from "./CompositeGoal";
 import { PathfindingBehaviour } from "../behaviours/PathfindingBehaviour";
 import { StaticGameEntity } from "../entities/StaticGameEntity";
 import { Planet } from "../entities/Planet";
+import { Goal } from "./Goal";
 
-export class GoalNavToPlanet extends CompositeGoal {
+export class GoalNavToPlanet extends Goal {
 
     public target: StaticGameEntity;
     private _hasBehaviour = false;
