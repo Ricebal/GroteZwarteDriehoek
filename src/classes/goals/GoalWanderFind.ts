@@ -62,13 +62,16 @@ export class GoalWanderFind extends Goal {
         if (Planets === PlanetsOutOfLOS) {
             this.LOSGoal++;
         }
-        // The 20 counter is to counteract false positives.
+        else {
+            // reset
+            this.LOSGoal = 0;
+        }
+        // The 10 counter is to counteract false positives.
         // Before this was implemented it often called false positives which would instantly move on from the goal, 20 iterations is not long when it's ticking every iteration
         // But atleast it filters out the false positives
-        if (this.LOSGoal > 20) {
+        if (this.LOSGoal > 10) {
             this.status = 'completed';
         }
         return this.status === 'completed';
     }
-
 }
