@@ -5,16 +5,11 @@ import { MovingGameEntity } from "../entities/MovingGameEntity";
 export abstract class Goal {
 
     public owner: MovingGameEntity;
-    public subGoal: Goal;
     public status: string = 'inactive';
     public label: string;
 
     constructor(owner: MovingGameEntity) {
         this.owner = owner;
-    }
-
-    public addSubGoal(goal: Goal) {
-        this.subGoal = goal;
     }
 
     public apply() {

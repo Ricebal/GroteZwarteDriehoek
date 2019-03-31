@@ -31,7 +31,7 @@ export class ObstacleAvoidBehaviour extends Behaviour {
             avoidance.limit(this.owner.maxAvoidForce);
             avoidance.mult(this.owner.maxSpeed);
         } else {
-            avoidance.mult(0); // nullify the avoidance force is there's no planet
+            avoidance.mult(0); // nullify the avoidance force is there's no scary planet
         }
         return avoidance;
     }

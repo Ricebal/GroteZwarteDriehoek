@@ -25,7 +25,6 @@ export class GoalDestroyPlanet extends Goal {
 
     public apply() {
         if (!this._hasBehaviour) {
-            console.log(this.owner.world.gameObjects.length);
             (<Planet>this.target).isDestroyed = true;
             this._hasBehaviour = true;
             (<SmallBlackTriangle>this.owner).avoid = new ObstacleAvoidBehaviour(this.owner);

@@ -14,4 +14,7 @@ export abstract class CompositeGoal extends Goal {
     public update(): void {
 
     }
+    public nextGoal(): void {
+
+    }
 }

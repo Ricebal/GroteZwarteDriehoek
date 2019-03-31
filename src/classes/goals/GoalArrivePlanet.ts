@@ -30,7 +30,7 @@ export class GoalArrivePlanet extends Goal {
         }
 
     }
-    // Checks i
+
     get isFinished(): boolean {
         if (this.status !== 'completed') {
             let distance = Vector.distanceSq(this.owner.position, this.target.position);
