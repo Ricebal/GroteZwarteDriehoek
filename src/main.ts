@@ -15,6 +15,9 @@ class App {
     panicDistanceTextbox.value = Config.panicDistance.toString();
     panicDistanceTextbox.addEventListener("change", Config.onPanicDistanceChanged, false);
 
+    const goalBehaviorsCheckbox = <HTMLInputElement>document.getElementById('goalBehaviorsCheckbox');
+    goalBehaviorsCheckbox.addEventListener("click", Config.onGoalBehaviorsToggled, false);
+
     const panicDistanceCheckbox = <HTMLInputElement>document.getElementById('panicDistanceCheckbox');
     panicDistanceCheckbox.addEventListener("click", Config.onPanicDistanceToggled, false);
 
