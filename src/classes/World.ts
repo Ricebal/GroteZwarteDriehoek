@@ -105,7 +105,9 @@ export class World {
     }
 
     public render(): void {
-        this.ctx.fillStyle = `rgb(${0})`;
+        let distance: number = Vector.distance(this.gameObjects[0].position, this.gameObjects[1].position);
+        let desirability: number = this.getDesirability(distance);
+        this.ctx.fillStyle = `rgb(255, ${255 - desirability}, ${255 - desirability})`;
         this.ctx.fillRect(0, 0, Config.canvasSize.x, Config.canvasSize.y);
         if (Config.navGridVisualEnabled)
             this.navGraph.draw();
@@ -116,8 +118,7 @@ export class World {
 
         this.ctx.fillStyle = 'rgba(0, 0, 0, 1)'
         this.ctx.font = "15px Georgia";
-        let distance = Vector.distance(this.gameObjects[0].position, this.gameObjects[1].position);
-        this.ctx.fillText(`Desirability: ${this.getDesirability(distance)}`, 30, 30);
+        this.ctx.fillText(`Desirability: ${desirability}`, 30, 30);
         this.ctx.fillText(`Distance: ${distance}`, 30, 45);
     }
 
