@@ -14,6 +14,12 @@ import { FuzzyVariable } from "./fuzzy/FuzzyVariable";
 import { FuzzySetLeftShoulder } from "./fuzzy/FuzzySetLeftShoulder";
 import { FuzzySet } from "./fuzzy/FuzzySet";
 import { FuzzyVery } from "./fuzzy/FuzzyVery";
+import { ObstacleAvoidBehaviour } from "./behaviours/ObstacleAvoidBehaviour";
+import { SeekBehaviour } from "./behaviours/SeekBehaviour";
+import { GoalSeek } from "./goals/GoalSeek";
+import { GoalDestroyTerrain } from "./goals/GoalDestroyTerrain";
+import { StaticGameEntity } from "./entities/StaticGameEntity";
+import { GoalWanderTillLOS } from "./goals/GoalWanderTillLOS";
 
 export class World {
     private _canvas: HTMLCanvasElement;
@@ -31,16 +37,26 @@ export class World {
         this.gameObjects = [];
         this.gameObjects.push(new BigBlackTriangle(200, 200, this));
         this.gameObjects.push(new SmallBlueCircle(600, 600, this));
+        (<BigBlackTriangle>this.gameObjects[0]).behaviours.push(new SeekBehaviour((<BigBlackTriangle>this.gameObjects[0]), (<BigBlackTriangle>this.gameObjects[1]).position))
         this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
         this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
         this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
-        // this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
-        // this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
-        // this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
         this.gameObjects.push(new SmallBlackTriangle(Math.random() * 900, Math.random() * 900, this));
-        for (let i = 0; i < 0; i++) {
-            this.gameObjects.push(new Planet(this));
+
+        for (let i = 0; i < 40; i++) {
+            let s = new Planet(this);
+            let isok = true;
+            for (let j = 5; j < this.gameObjects.length; j++) {
+                if (Vector.distanceSq(s.position, this.gameObjects[j].position) < (Math.pow((<Planet>this.gameObjects[j]).size, 2) + Math.pow(s.size, 2)) + 5000) {
+                    isok = false;
+                }
+            }
+            if (isok)
+                this.gameObjects.push(s);
+
         }
+
+        this.navGraph = new NavGraph(30, this);
 
         this.gameObjects.forEach(e => {
             if (e instanceof SmallBlackTriangle) {
@@ -48,6 +64,15 @@ export class World {
                     if (x instanceof SmallBlackTriangle)
                         e.group.push(x);
                 });
+                // Each small black triangle gets a random goal all ending in following Big Black Triangle
+                let randomNumber = Math.random();
+                if (randomNumber > 0 && randomNumber < 0.333) {
+                    e.goal = new GoalSeek(e, <MovingGameEntity>e.world.gameObjects[0]);
+                } else if (randomNumber < 0.666) {
+                    e.goal = new GoalDestroyTerrain(e, <StaticGameEntity>e.world.gameObjects[Math.floor(Math.random() * (e.world.gameObjects.length - 6)) + 6]);
+                } else {
+                    e.goal = new GoalWanderTillLOS(e, <MovingGameEntity>e.world.gameObjects[0]);
+                }
             }
         });
 
@@ -80,8 +105,8 @@ export class World {
     }
 
     public render(): void {
-        let ctx: CanvasRenderingContext2D = this.ctx;
-        ctx.clearRect(0, 0, Config.canvasSize.x, Config.canvasSize.y);
+        this.ctx.fillStyle = `rgb(${0})`;
+        this.ctx.fillRect(0, 0, Config.canvasSize.x, Config.canvasSize.y);
         if (Config.navGridVisualEnabled)
             this.navGraph.draw();
 
@@ -89,11 +114,11 @@ export class World {
             this.gameObjects[i].update();
         }
 
-        ctx.fillStyle = 'rgba(0, 0, 0, 1)'
-        ctx.font = "15px Georgia";
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 1)'
+        this.ctx.font = "15px Georgia";
         let distance = Vector.distance(this.gameObjects[0].position, this.gameObjects[1].position);
-        ctx.fillText(`Desirability: ${this.getDesirability(distance)}`, 30, 30);
-        ctx.fillText(`Distance: ${distance}`, 30, 45);
+        this.ctx.fillText(`Desirability: ${this.getDesirability(distance)}`, 30, 30);
+        this.ctx.fillText(`Distance: ${distance}`, 30, 45);
     }
 
     public onMouseClick(e: MouseEvent): void {

@@ -57,11 +57,11 @@ export class Vector {
         return new Vector(this.x, this.y);
     }
 
-    private magSq(): number {
+    public magSq(): number {
         return this.x * this.x + this.y * this.y;
     }
 
-    private mag(): number {
+    public mag(): number {
         return Math.sqrt(this.magSq());
     }
 
@@ -80,5 +80,18 @@ export class Vector {
             this.mult(max);
         }
         return this;
+    }
+    public limitMin(min: number): Vector {
+        let mSq = this.magSq();
+        if (mSq < min * min) {
+            this.div(Math.sqrt(mSq));
+            this.mult(min);
+        }
+        return this;
+    }
+
+    public angleDegrees(v2: Vector): number {
+        var angleDeg = Math.atan2(v2.y - this.y, v2.x - this.x) * 180 / Math.PI;
+        return angleDeg;
     }
 }
