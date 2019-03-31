@@ -7,6 +7,13 @@ import { Config } from "./Config";
 import { NavGraph } from "./graph/NavGraph";
 import { SmallBlackTriangle } from "./entities/SmallBlackTriangle";
 import { MovingGameEntity } from "./entities/MovingGameEntity";
+import { FuzzyModule } from "./fuzzy/FuzzyModule";
+import { FuzzyAnd } from "./fuzzy/FuzzyAnd";
+import { FuzzyTerm } from "./fuzzy/FuzzyTerm";
+import { FuzzyVariable } from "./fuzzy/FuzzyVariable";
+import { FuzzySetLeftShoulder } from "./fuzzy/FuzzySetLeftShoulder";
+import { FuzzySet } from "./fuzzy/FuzzySet";
+import { FuzzyVery } from "./fuzzy/FuzzyVery";
 import { ObstacleAvoidBehaviour } from "./behaviours/ObstacleAvoidBehaviour";
 import { SeekBehaviour } from "./behaviours/SeekBehaviour";
 import { GoalSeek } from "./goals/GoalSeek";
@@ -19,6 +26,7 @@ export class World {
     public ctx: CanvasRenderingContext2D;
     public gameObjects: Array<BaseGameEntity>;
     public navGraph: NavGraph;
+    public fuzzyModule: FuzzyModule;
 
     constructor(canvas: HTMLCanvasElement) {
         this._canvas = canvas;
@@ -66,11 +74,40 @@ export class World {
                     e.goal = new GoalWanderTillLOS(e, <MovingGameEntity>e.world.gameObjects[0]);
                 }
             }
-        })
+        });
+
+        this.initializeFuzzyModule();
+
+        this.navGraph = new NavGraph(30, this);
+    }
+
+    public getDesirability(distToTarget: number) {
+        this.fuzzyModule.fuzzify('distToTarget', distToTarget);
+        const lastDesirabilityScore = this.fuzzyModule.defuzzify('desirability', 'maxav');
+        return lastDesirabilityScore;
+    }
+
+    public initializeFuzzyModule(): void {
+        this.fuzzyModule = new FuzzyModule();
+        let distToTarget: FuzzyVariable = this.fuzzyModule.createFLV('distToTarget');
+        let targetClose: FuzzySet = distToTarget.addLeftShoulderSet('targetClose', 0, 25, 150);
+        let targetMedium: FuzzySet = distToTarget.addTriangularSet('targetMedium', 25, 150, 300);
+        let targetFar: FuzzySet = distToTarget.addRightShoulderSet('targetFar', 150, 300, 1000);
+
+        let desirability: FuzzyVariable = this.fuzzyModule.createFLV('desirability');
+        let veryDesirable: FuzzySet = desirability.addRightShoulderSet('veryDesirable', 50, 75, 100);
+        let desirable: FuzzySet = desirability.addTriangularSet('desirable', 25, 50, 75);
+        let undesirable: FuzzySet = desirability.addLeftShoulderSet('undesirable', 0, 25, 50);
+
+        this.fuzzyModule.addRule(targetClose, desirable);
+        this.fuzzyModule.addRule(targetMedium, undesirable);
+        this.fuzzyModule.addRule(targetFar, undesirable);
     }
 
     public render(): void {
-        this.ctx.fillStyle = `rgb(${0})`;
+        let distance: number = Vector.distance(this.gameObjects[0].position, this.gameObjects[1].position);
+        let desirability: number = this.getDesirability(distance);
+        this.ctx.fillStyle = `rgb(255, ${255 - desirability}, ${255 - desirability})`;
         this.ctx.fillRect(0, 0, Config.canvasSize.x, Config.canvasSize.y);
         if (Config.navGridVisualEnabled)
             this.navGraph.draw();
@@ -78,6 +115,11 @@ export class World {
         for (let i = 0; i < this.gameObjects.length; i++) {
             this.gameObjects[i].update();
         }
+
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 1)'
+        this.ctx.font = "15px Georgia";
+        this.ctx.fillText(`Desirability: ${desirability}`, 30, 30);
+        this.ctx.fillText(`Distance: ${distance}`, 30, 45);
     }
 
     public onMouseClick(e: MouseEvent): void {
