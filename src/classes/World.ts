@@ -70,7 +70,8 @@ export class World {
     }
 
     public render(): void {
-        this.ctx.clearRect(0, 0, Config.canvasSize.x, Config.canvasSize.y);
+        this.ctx.fillStyle = `rgb(${0})`;
+        this.ctx.fillRect(0, 0, Config.canvasSize.x, Config.canvasSize.y);
         if (Config.navGridVisualEnabled)
             this.navGraph.draw();
 
