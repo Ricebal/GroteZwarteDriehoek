@@ -11,6 +11,7 @@ export class Config {
 
     public static panicDistanceVisualEnabled: boolean = false;
     public static goalBehaviorsCheckboxEnabled: boolean = false;
+    public static lineOfSightVisualEnabled: boolean = false;
     public static panicDistance: number = 200;
 
     public static navGridVisualEnabled: boolean = false;
@@ -23,9 +24,15 @@ export class Config {
             Config.panicDistance = input;
         }
     }
+
     public static onGoalBehaviorsToggled(e: Event): void {
         const checkBox: HTMLInputElement = <HTMLInputElement>e.srcElement;
         Config.goalBehaviorsCheckboxEnabled = checkBox.checked;
+    }
+
+    public static onLineOfSightToggled(e: Event): void {
+        const checkBox: HTMLInputElement = <HTMLInputElement>e.srcElement;
+        Config.lineOfSightVisualEnabled = checkBox.checked;
     }
 
     public static onPanicDistanceToggled(e: Event): void {

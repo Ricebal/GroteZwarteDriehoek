@@ -23,6 +23,9 @@ class App {
 
     const navGridCheckbox = <HTMLInputElement>document.getElementById('navGridCheckbox');
     navGridCheckbox.addEventListener("click", Config.onNavGridToggled, false);
+
+    const lineOfSightCheckbox = <HTMLInputElement>document.getElementById('lineOfSightCheckbox');
+    lineOfSightCheckbox.addEventListener("click", Config.onLineOfSightToggled, false);
   }
 
   private gameLoop(): void {

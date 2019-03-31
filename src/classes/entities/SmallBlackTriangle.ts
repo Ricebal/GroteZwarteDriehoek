@@ -111,15 +111,6 @@ export class SmallBlackTriangle extends MovingGameEntity {
                 if (context.inCircle(owner.position, owner.world.gameObjects[1].position, element)) {
                     inLOS = false;
                 }
-
-                if (context.isBetween(context.position, context.world.gameObjects[1].position, context.d.clone().add(context.position))) {
-                    ctx.strokeStyle = 'rgb(255, 0, 0)';
-                    ctx.beginPath();
-                    ctx.moveTo(element.position.x, element.position.y);
-                    ctx.lineTo(context.d.x + context.position.x, context.d.y + context.position.y);
-                    ctx.stroke();
-                    ctx.closePath();
-                }
             }
         })
         if (inLOS) {
@@ -127,11 +118,13 @@ export class SmallBlackTriangle extends MovingGameEntity {
         } else {
             ctx.strokeStyle = 'rgb(255, 0, 0)';
         }
-        ctx.beginPath();
-        ctx.moveTo(this.position.x, this.position.y);
-        ctx.lineTo(this.world.gameObjects[1].position.x, this.world.gameObjects[1].position.y);
-        ctx.stroke();
-        ctx.closePath();
+        if (Config.lineOfSightVisualEnabled) {
+            ctx.beginPath();
+            ctx.moveTo(this.position.x, this.position.y);
+            ctx.lineTo(this.world.gameObjects[1].position.x, this.world.gameObjects[1].position.y);
+            ctx.stroke();
+            ctx.closePath();
+        }
         ctx.fillStyle = 'rgb(0, 0, 0)';
         ctx.beginPath();
         ctx.moveTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 1.5) * this.size, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 1.5) * this.size);
@@ -141,12 +134,11 @@ export class SmallBlackTriangle extends MovingGameEntity {
         ctx.closePath();
 
         ctx.beginPath();
-
         ctx.lineTo(this.position.x + Math.cos(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size, this.position.y + Math.sin(Math.atan2(this.velocity.y, this.velocity.x) + Math.PI * 0.5) * this.size);
         ctx.fill();
         ctx.closePath();
 
-        if (context.isBetween(context.position, context.world.gameObjects[1].position, context.d.clone().add(context.position))) {
+        if (context.isBetween(context.position, context.world.gameObjects[1].position, context.d.clone().add(context.position)) && Config.lineOfSightVisualEnabled) {
             ctx.beginPath();
             ctx.arc(this.d.x + this.position.x, this.d.y + this.position.y, 2, 0, 2 * Math.PI);
             ctx.fill();
